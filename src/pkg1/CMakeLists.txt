@@ -11,9 +11,12 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 
-# set(MUJOCO_DIR "/home/zhiquan/.mujoco/mujoco-3.1.2")
+set(MUJOCO_DIR "/home/zhiquan/.mujoco/mujoco-3.1.2")
 
-# include_directories("${MUJOCO_DIR}/include/mujoco")
+include_directories("${MUJOCO_DIR}/include/")
+
+find_library(MUJOCO_LIBRARY mujoco PATHS /home/zhiquan/.mujoco/mujoco-3.1.2/lib)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -32,6 +35,7 @@ add_executable(publisher src/publisher_node.cpp)
 add_executable(subscriber src/subscriber_node.cpp)
 ament_target_dependencies(publisher ${dependencies})
 ament_target_dependencies(subscriber ${dependencies})
+target_link_libraries(subscriber ${MUJOCO_LIBRARY})
 
 install(TARGETS
   publisher

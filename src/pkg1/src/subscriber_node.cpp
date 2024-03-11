@@ -1,6 +1,7 @@
 #include <memory>
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "mujoco/mujoco.h"
 
 using std::placeholders::_1;
 

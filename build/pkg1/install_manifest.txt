@@ -1,0 +1,17 @@
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/publisher
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/subscriber
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/ament_index/resource_index/package_run_dependencies/pkg1
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/ament_index/resource_index/parent_prefix_path/pkg1
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/ament_prefix_path.sh
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/ament_prefix_path.dsv
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/path.sh
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/path.dsv
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.bash
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.sh
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.zsh
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.dsv
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/package.dsv
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/ament_index/resource_index/packages/pkg1
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/cmake/pkg1Config.cmake
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/cmake/pkg1Config-version.cmake
+/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/package.xml

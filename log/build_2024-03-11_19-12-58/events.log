@@ -1,0 +1,96 @@
+[0.000000] (-) TimerEvent: {}
+[0.000255] (pkg1) JobQueued: {'identifier': 'pkg1', 'dependencies': OrderedDict()}
+[0.000279] (pkg1) JobStarted: {'identifier': 'pkg1'}
+[0.061135] (pkg1) JobProgress: {'identifier': 'pkg1', 'progress': 'cmake'}
+[0.064557] (pkg1) JobProgress: {'identifier': 'pkg1', 'progress': 'build'}
+[0.064608] (pkg1) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1', '--', '-j2', '-l2'], 'cwd': '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'zhiquan'), ('XDG_SESSION_TYPE', 'wayland'), ('GIT_ASKPASS', '/usr/share/code/resources/app/extensions/git/dist/askpass.sh'), ('SHLVL', '2'), ('LD_LIBRARY_PATH', '/home/zhiquan/.mujoco/mujoco210/bin:/usr/lib/nvidia'), ('HOME', '/home/zhiquan'), ('CHROME_DESKTOP', 'code-url-handler.desktop'), ('CONDA_SHLVL', '0'), ('OLDPWD', '/home/zhiquan'), ('TERM_PROGRAM_VERSION', '1.87.0'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('VSCODE_GIT_ASKPASS_MAIN', '/usr/share/code/resources/app/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/usr/share/code/code'), ('SYSTEMD_EXEC_PID', '2088'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_CE_M', ''), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/zhiquan/ros2_learn/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'zhiquan'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zhiquan'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('_CE_CONDA', ''), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/zhiquan/.mujoco/mujoco210/bin:/usr/lib/nvidia:/home/zhiquan/.mujoco/mujoco210/bin:/usr/lib/nvidia:/opt/ros/humble/bin:/home/zhiquan/anaconda3/condabin:/home/zhiquan/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zhiquan:@/tmp/.ICE-unix/1928,unix/zhiquan:/tmp/.ICE-unix/1928'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/09ea4dd9_0ec7_473f_bb5e_6c10b5468faa'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('GDK_BACKEND', 'x11'), ('DISPLAY', ':0'), ('LD_PRELOAD', '/usr/lib/aarch64-linux-gnu/libGLEW.so'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'Unity'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.OZYAK2'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-957fefd4d7.sock'), ('GNOME_TERMINAL_SERVICE', ':1.109'), ('TERM_PROGRAM', 'vscode'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zhiquan/ros2_learn/install/learn:/opt/ros/humble'), ('CONDA_PYTHON_EXE', '/home/zhiquan/anaconda3/bin/python'), ('ORIGINAL_XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CONDA_EXE', '/home/zhiquan/anaconda3/bin/conda'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/zhiquan/ros2_learn/install/learn:/opt/ros/humble')]), 'shell': False}
+[0.099790] (-) TimerEvent: {}
+[0.170877] (pkg1) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target publisher\x1b[0m\n'}
+[0.171218] (pkg1) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target subscriber\x1b[0m\n'}
+[0.189969] (pkg1) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/subscriber.dir/src/subscriber_node.cpp.o\x1b[0m\n'}
+[0.195424] (pkg1) StdoutLine: {'line': b'[ 75%] Built target publisher\n'}
+[0.199994] (-) TimerEvent: {}
+[0.302771] (-) TimerEvent: {}
+[0.403049] (-) TimerEvent: {}
+[0.503305] (-) TimerEvent: {}
+[0.603729] (-) TimerEvent: {}
+[0.704003] (-) TimerEvent: {}
+[0.804327] (-) TimerEvent: {}
+[0.904883] (-) TimerEvent: {}
+[1.005287] (-) TimerEvent: {}
+[1.105813] (-) TimerEvent: {}
+[1.208591] (-) TimerEvent: {}
+[1.309207] (-) TimerEvent: {}
+[1.409485] (-) TimerEvent: {}
+[1.510186] (-) TimerEvent: {}
+[1.610497] (-) TimerEvent: {}
+[1.710823] (-) TimerEvent: {}
+[1.811204] (-) TimerEvent: {}
+[1.911513] (-) TimerEvent: {}
+[2.011830] (-) TimerEvent: {}
+[2.112094] (-) TimerEvent: {}
+[2.212365] (-) TimerEvent: {}
+[2.312659] (-) TimerEvent: {}
+[2.412931] (-) TimerEvent: {}
+[2.513202] (-) TimerEvent: {}
+[2.613469] (-) TimerEvent: {}
+[2.713748] (-) TimerEvent: {}
+[2.814048] (-) TimerEvent: {}
+[2.914335] (-) TimerEvent: {}
+[3.014655] (-) TimerEvent: {}
+[3.115015] (-) TimerEvent: {}
+[3.215293] (-) TimerEvent: {}
+[3.315591] (-) TimerEvent: {}
+[3.415891] (-) TimerEvent: {}
+[3.516173] (-) TimerEvent: {}
+[3.616433] (-) TimerEvent: {}
+[3.716696] (-) TimerEvent: {}
+[3.816949] (-) TimerEvent: {}
+[3.917201] (-) TimerEvent: {}
+[4.017493] (-) TimerEvent: {}
+[4.117763] (-) TimerEvent: {}
+[4.218170] (-) TimerEvent: {}
+[4.318625] (-) TimerEvent: {}
+[4.418864] (-) TimerEvent: {}
+[4.519127] (-) TimerEvent: {}
+[4.619379] (-) TimerEvent: {}
+[4.719619] (-) TimerEvent: {}
+[4.819866] (-) TimerEvent: {}
+[4.920293] (-) TimerEvent: {}
+[5.020794] (-) TimerEvent: {}
+[5.122329] (-) TimerEvent: {}
+[5.222580] (-) TimerEvent: {}
+[5.323091] (-) TimerEvent: {}
+[5.360208] (pkg1) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable subscriber\x1b[0m\n'}
+[5.423194] (-) TimerEvent: {}
+[5.523451] (-) TimerEvent: {}
+[5.623708] (-) TimerEvent: {}
+[5.709956] (pkg1) StdoutLine: {'line': b'[100%] Built target subscriber\n'}
+[5.724031] (-) TimerEvent: {}
+[5.724502] (pkg1) CommandEnded: {'returncode': 0}
+[5.760657] (pkg1) JobProgress: {'identifier': 'pkg1', 'progress': 'install'}
+[5.771856] (pkg1) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1'], 'cwd': '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'zhiquan'), ('XDG_SESSION_TYPE', 'wayland'), ('GIT_ASKPASS', '/usr/share/code/resources/app/extensions/git/dist/askpass.sh'), ('SHLVL', '2'), ('LD_LIBRARY_PATH', '/home/zhiquan/.mujoco/mujoco210/bin:/usr/lib/nvidia'), ('HOME', '/home/zhiquan'), ('CHROME_DESKTOP', 'code-url-handler.desktop'), ('CONDA_SHLVL', '0'), ('OLDPWD', '/home/zhiquan'), ('TERM_PROGRAM_VERSION', '1.87.0'), ('DESKTOP_SESSION', 'ubuntu'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('VSCODE_GIT_ASKPASS_MAIN', '/usr/share/code/resources/app/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/usr/share/code/code'), ('SYSTEMD_EXEC_PID', '2088'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_CE_M', ''), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('COLCON_PREFIX_PATH', '/home/zhiquan/ros2_learn/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'zhiquan'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zhiquan'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('_CE_CONDA', ''), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/zhiquan/.mujoco/mujoco210/bin:/usr/lib/nvidia:/home/zhiquan/.mujoco/mujoco210/bin:/usr/lib/nvidia:/opt/ros/humble/bin:/home/zhiquan/anaconda3/condabin:/home/zhiquan/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zhiquan:@/tmp/.ICE-unix/1928,unix/zhiquan:/tmp/.ICE-unix/1928'), ('XDG_MENU_PREFIX', 'gnome-'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/09ea4dd9_0ec7_473f_bb5e_6c10b5468faa'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('GDK_BACKEND', 'x11'), ('DISPLAY', ':0'), ('LD_PRELOAD', '/usr/lib/aarch64-linux-gnu/libGLEW.so'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'Unity'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.OZYAK2'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-957fefd4d7.sock'), ('GNOME_TERMINAL_SERVICE', ':1.109'), ('TERM_PROGRAM', 'vscode'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zhiquan/ros2_learn/install/learn:/opt/ros/humble'), ('CONDA_PYTHON_EXE', '/home/zhiquan/anaconda3/bin/python'), ('ORIGINAL_XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('SHELL', '/bin/bash'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CONDA_EXE', '/home/zhiquan/anaconda3/bin/conda'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/zhiquan/ros2_learn/install/learn:/opt/ros/humble')]), 'shell': False}
+[5.777473] (pkg1) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[5.777847] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/publisher\n'}
+[5.788699] (pkg1) StdoutLine: {'line': b'-- Set runtime path of "/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/publisher" to ""\n'}
+[5.788922] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/subscriber\n'}
+[5.792488] (pkg1) StdoutLine: {'line': b'-- Set runtime path of "/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/subscriber" to ""\n'}
+[5.792741] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/ament_index/resource_index/package_run_dependencies/pkg1\n'}
+[5.793225] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/ament_index/resource_index/parent_prefix_path/pkg1\n'}
+[5.793644] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/ament_prefix_path.sh\n'}
+[5.793874] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/ament_prefix_path.dsv\n'}
+[5.794217] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/path.sh\n'}
+[5.794456] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/path.dsv\n'}
+[5.794834] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.bash\n'}
+[5.794957] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.sh\n'}
+[5.795275] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.zsh\n'}
+[5.795504] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.dsv\n'}
+[5.795830] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/package.dsv\n'}
+[5.796098] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/ament_index/resource_index/packages/pkg1\n'}
+[5.796323] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/cmake/pkg1Config.cmake\n'}
+[5.796603] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/cmake/pkg1Config-version.cmake\n'}
+[5.796834] (pkg1) StdoutLine: {'line': b'-- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/package.xml\n'}
+[5.798365] (pkg1) CommandEnded: {'returncode': 0}
+[5.824105] (-) TimerEvent: {}
+[5.921974] (pkg1) JobEnded: {'identifier': 'pkg1', 'rc': 0}
+[5.922599] (-) EventReactorShutdown: {}

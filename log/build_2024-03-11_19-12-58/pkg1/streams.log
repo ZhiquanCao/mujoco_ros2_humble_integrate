@@ -1,0 +1,30 @@
+[0.065s] Invoking command in '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1 -- -j2 -l2
+[0.171s] [35m[1mConsolidate compiler generated dependencies of target publisher[0m
+[0.171s] [35m[1mConsolidate compiler generated dependencies of target subscriber[0m
+[0.190s] [ 25%] [32mBuilding CXX object CMakeFiles/subscriber.dir/src/subscriber_node.cpp.o[0m
+[0.195s] [ 75%] Built target publisher
+[5.360s] [100%] [32m[1mLinking CXX executable subscriber[0m
+[5.710s] [100%] Built target subscriber
+[5.724s] Invoked command in '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1 -- -j2 -l2
+[5.772s] Invoking command in '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1
+[5.777s] -- Install configuration: ""
+[5.778s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/publisher
+[5.789s] -- Set runtime path of "/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/publisher" to ""
+[5.789s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/subscriber
+[5.792s] -- Set runtime path of "/home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/lib/pkg1/subscriber" to ""
+[5.792s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/ament_index/resource_index/package_run_dependencies/pkg1
+[5.793s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/ament_index/resource_index/parent_prefix_path/pkg1
+[5.793s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/ament_prefix_path.sh
+[5.794s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/ament_prefix_path.dsv
+[5.794s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/path.sh
+[5.794s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/environment/path.dsv
+[5.795s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.bash
+[5.795s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.sh
+[5.795s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.zsh
+[5.795s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/local_setup.dsv
+[5.796s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/package.dsv
+[5.796s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/ament_index/resource_index/packages/pkg1
+[5.796s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/cmake/pkg1Config.cmake
+[5.796s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/cmake/pkg1Config-version.cmake
+[5.797s] -- Installing: /home/zhiquan/mujoco_ros2_humble_integrate/install/pkg1/share/pkg1/package.xml
+[5.798s] Invoked command in '/home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/zhiquan/mujoco_ros2_humble_integrate/build/pkg1

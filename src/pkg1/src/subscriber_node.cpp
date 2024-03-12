@@ -40,33 +40,64 @@ void init_mujoco() {
 }
 
 #include "GLFW/glfw3.h"
-mjvCamera cam;                   // camera
-mjvScene scn;                    // abstract scene
-mjrContext con;                  // custom GPU context
+// MuJoCo data structures
+mjvCamera cam;                      // abstract camera
+mjvOption opt;                      // visualization options
+mjvScene scn;                       // abstract scene
+mjrContext con;                     // custom GPU context
 
 void init_renderer() {
-    // Initialize GLFW
-    if (!glfwInit()) {
-        std::cerr << "Could not initialize GLFW." << std::endl;
-        exit(1);
-    }
+  // ... load model and data
 
-    // Create a window and make its context current (using GLFW)
-    GLFWwindow* window = glfwCreateWindow(1200, 900, "MuJoCo Simulation", nullptr, nullptr);
-    if (!window) {
-        std::cerr << "Could not create GLFW window." << std::endl;
-        exit(1);
-    }
-    glfwMakeContextCurrent(window);
+  // init GLFW, create window, make OpenGL context current, request v-sync
+  glfwInit();
+  GLFWwindow* window = glfwCreateWindow(1200, 900, "Demo", NULL, NULL);
+  glfwMakeContextCurrent(window);
+  glfwSwapInterval(1);
 
-    // Initialize MuJoCo visualization contexts
-    mjv_defaultCamera(&cam);
-    mjv_defaultScene(&scn);
-    mjr_defaultContext(&con);
+  // initialize visualization data structures
+  mjv_defaultCamera(&cam);
+  // mjv_defaultPerturb(&pert);
+  mjv_defaultOption(&opt);
+  mjr_defaultContext(&con);
 
-    // Assign the MuJoCo model to the scene
-    mjv_makeScene(m, &scn, 2000);   // 2000 is the max number of geom objects to be visualized
-    mjr_makeContext(m, &con, mjFONTSCALE_100);
+  // create scene and context
+  mjv_makeScene(m, &scn, 1000);
+  mjr_makeContext(m, &con, mjFONTSCALE_100);
+
+  // ... install GLFW keyboard and mouse callbacks
+
+  // run main loop, target real-time simulation and 60 fps rendering
+  while( !glfwWindowShouldClose(window) ) {
+    // advance interactive simulation for 1/60 sec
+    //  Assuming MuJoCo can simulate faster than real-time, which it usually can,
+    //  this loop will finish on time for the next frame to be rendered at 60 fps.
+    //  Otherwise add a cpu timer and exit this loop when it is time to render.
+    mjtNum simstart = d->time;
+    while( d->time - simstart < 1.0/60.0 )
+        mj_step(m, d);
+
+    // get framebuffer viewport
+    mjrRect viewport = {0, 0, 0, 0};
+    glfwGetFramebufferSize(window, &viewport.width, &viewport.height);
+
+    // update scene and render
+    mjv_updateScene(m, d, &opt, NULL, &cam, mjCAT_ALL, &scn);
+    mjr_render(viewport, &scn, &con);
+
+    // swap OpenGL buffers (blocking call due to v-sync)
+    glfwSwapBuffers(window);
+
+    // process pending GUI events, call GLFW callbacks
+    glfwPollEvents();
+  }
+
+  // close GLFW, free visualization storage
+  glfwTerminate();
+  mjv_freeScene(&scn);
+  mjr_freeContext(&con);
+
+  // ... free MuJoCo model and data
 }
 
 void simulation_step() {

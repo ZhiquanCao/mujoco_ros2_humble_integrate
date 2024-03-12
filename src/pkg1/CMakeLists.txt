@@ -10,6 +10,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(glfw3 REQUIRED)
+
 
 set(MUJOCO_DIR "/home/zhiquan/.mujoco/mujoco-3.1.2")
 
@@ -35,7 +37,7 @@ add_executable(publisher src/publisher_node.cpp)
 add_executable(subscriber src/subscriber_node.cpp)
 ament_target_dependencies(publisher ${dependencies})
 ament_target_dependencies(subscriber ${dependencies})
-target_link_libraries(subscriber ${MUJOCO_LIBRARY})
+target_link_libraries(subscriber ${MUJOCO_LIBRARY} glfw)
 
 install(TARGETS
   publisher

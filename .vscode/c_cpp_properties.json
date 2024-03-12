@@ -7,7 +7,7 @@
       },
       "includePath": [
         "/opt/ros/humble/include/**",
-        "/home/zhiquan/mujoco_ros2_humble_integrate/src/learn/include/**",
+        "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/include/**",
         "/usr/include/**"
       ],
       "name": "ROS",

@@ -31,13 +31,33 @@ void init_mujoco() {
   
   // Load the model
   char error[1000] = "Could not load model";
-  m = mj_loadXML("/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/hello.xml", nullptr, error, 1000);
+  m = mj_loadXML("/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/7dof_arm.xml", nullptr, error, 1000);
   if (!m) {
       std::cerr << error << std::endl;
       exit(1);
   }
   d = mj_makeData(m);
 }
+
+void myCallback(const mjModel* m, mjData* d)
+{
+    // Access and modify data as needed
+    // For example, print the positions of all bodies
+    std::cout << "LEN OF CTRL " << sizeof(d->ctrl)/sizeof(d->ctrl[0]) << " nv is "<<m->nv << " nu is "<<m->nu << std::endl;
+    std::cout<<"data.act: " <<d->act[0] << std::endl;
+    std::cout<<"data.actforce: " <<d->actuator_force[0] << std::endl;
+    for (int i = 0; i < m->nu; ++i) {
+        d->ctrl[i] = 70;
+        std::cout << "ctrl " << i << " is " << d->ctrl[i] << std::endl;
+    }
+    for (int i = 0; i < m->nbody; i++) {
+        std::cout << "Body " << i << " position: "
+                  << d->xpos[i * 3] << ", "
+                  << d->xpos[i * 3 + 1] << ", "
+                  << d->xpos[i * 3 + 2] << std::endl;
+    }
+}
+
 
 #include "GLFW/glfw3.h"
 // MuJoCo data structures
@@ -118,6 +138,8 @@ int main(int argc, char* argv[]) {
     // Initialize MuJoCo and rendering
     init_mujoco();
     init_renderer();
+
+    mjcb_control = myCallback;
 
     // Main ROS loop in a separate thread or using a ROS 2 timer
     std::thread mujoco_thread([&] {

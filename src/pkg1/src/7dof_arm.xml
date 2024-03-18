@@ -10,10 +10,8 @@
   <worldbody>
     <light pos="0 1 1" dir="0 -1 -1" diffuse="1 1 1"/>
     <body pos="0 0 1">
-      <inertial mass="0.1" diaginertia="0.0001 0.0001 0.0001" pos="0 0 0"/>
-      <!-- <joint name="joint1" axis="0 1 0"/> -->
-      <joint name="joint1" type="hinge" axis="0 1 0" pos="0 0 0"/>
-      
+      <!-- <inertial mass="0.1" diaginertia="0.0001 0.0001 0.0001" pos="0 0 0"/> -->
+      <joint name="joint1" axis="0 1 0" type="hinge"/>      
       <geom type="capsule" size="0.06" fromto="0 0 0  0 0 -.4"/>
       <body pos="0 0 -0.4">
         <joint axis="0 1 0"/>
@@ -36,7 +34,8 @@
   </worldbody>
 
   <actuator>
-    <position joint="joint1" kp="100"/>
+    <position ctrllimited="true" ctrlrange="-.6 .6" joint="joint1" kp="100"/>
+    <!-- <motor name="joint1" gear="100" joint="joint1" /> -->
   </actuator>
 
   <tendon>

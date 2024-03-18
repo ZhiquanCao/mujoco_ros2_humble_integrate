@@ -28,8 +28,6 @@ mjModel* m = nullptr; // The MuJoCo model
 mjData* d = nullptr;  // The data structure for simulation
 
 void init_mujoco() {
-  
-  // Load the model
   char error[1000] = "Could not load model";
   m = mj_loadXML("/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/7dof_arm.xml", nullptr, error, 1000);
   if (!m) {
@@ -41,15 +39,8 @@ void init_mujoco() {
 
 void myCallback(const mjModel* m, mjData* d)
 {
-    // Access and modify data as needed
-    // For example, print the positions of all bodies
-    std::cout << "LEN OF CTRL " << sizeof(d->ctrl)/sizeof(d->ctrl[0]) << " nv is "<<m->nv << " nu is "<<m->nu << std::endl;
     std::cout<<"data.act: " <<d->act[0] << std::endl;
     std::cout<<"data.actforce: " <<d->actuator_force[0] << std::endl;
-    for (int i = 0; i < m->nu; ++i) {
-        d->ctrl[i] = 70;
-        std::cout << "ctrl " << i << " is " << d->ctrl[i] << std::endl;
-    }
     for (int i = 0; i < m->nbody; i++) {
         std::cout << "Body " << i << " position: "
                   << d->xpos[i * 3] << ", "
@@ -94,39 +85,33 @@ void init_renderer() {
     //  this loop will finish on time for the next frame to be rendered at 60 fps.
     //  Otherwise add a cpu timer and exit this loop when it is time to render.
     mjtNum simstart = d->time;
-    while( d->time - simstart < 1.0/60.0 )
-        mj_step(m, d);
+    while( d->time - simstart < 1.0/60.0 ){
+      for (int i = 0; i < m->nu; ++i) {
+          d->ctrl[i] = 50;
+      }
+      mj_step(m, d);
+    }
 
-    // get framebuffer viewport
     mjrRect viewport = {0, 0, 0, 0};
     glfwGetFramebufferSize(window, &viewport.width, &viewport.height);
 
-    // update scene and render
     mjv_updateScene(m, d, &opt, NULL, &cam, mjCAT_ALL, &scn);
     mjr_render(viewport, &scn, &con);
 
-    // swap OpenGL buffers (blocking call due to v-sync)
     glfwSwapBuffers(window);
 
-    // process pending GUI events, call GLFW callbacks
     glfwPollEvents();
   }
 
-  // close GLFW, free visualization storage
   glfwTerminate();
   mjv_freeScene(&scn);
   mjr_freeContext(&con);
-
-  // ... free MuJoCo model and data
 }
 
 void simulation_step() {
     // Example: simple simulation step
     mj_step(m, d);
 
-    // Optional: Render the scene
-    // mjr_render(&rect, &scn, &con);
-    
     // Handle GLFW events
     glfwPollEvents();
 }
@@ -135,23 +120,14 @@ int main(int argc, char* argv[]) {
     rclcpp::init(argc, argv);
     auto node = std::make_shared<MinimalSubscriber>();
     
-    // Initialize MuJoCo and rendering
     init_mujoco();
     init_renderer();
 
     mjcb_control = myCallback;
 
-    // Main ROS loop in a separate thread or using a ROS 2 timer
-    std::thread mujoco_thread([&] {
-        while (rclcpp::ok()) {
-            simulation_step();
-        }
-    });
-
     rclcpp::spin(node);
     rclcpp::shutdown();
 
-    // Cleanup
     mj_deleteData(d);
     mj_deleteModel(m);
 

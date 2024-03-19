@@ -29,7 +29,7 @@ mjData* d = nullptr;  // The data structure for simulation
 
 void init_mujoco() {
   char error[1000] = "Could not load model";
-  m = mj_loadXML("/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/7dof_arm.xml", nullptr, error, 1000);
+  m = mj_loadXML("/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml", nullptr, error, 1000);
   if (!m) {
       std::cerr << error << std::endl;
       exit(1);
@@ -87,7 +87,8 @@ void init_renderer() {
     mjtNum simstart = d->time;
     while( d->time - simstart < 1.0/60.0 ){
       for (int i = 0; i < m->nu; ++i) {
-          d->ctrl[i] = 50;
+          // d->ctrl[i] = 80;
+          std::cout<<"d->ctrl[i] is "<<d->ctrl[i]<<std::endl;
       }
       mj_step(m, d);
     }

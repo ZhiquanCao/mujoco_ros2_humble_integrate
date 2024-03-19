@@ -34,7 +34,7 @@
   </worldbody>
 
   <actuator>
-    <position ctrllimited="true" ctrlrange="-.6 .6" joint="joint1" kp="100"/>
+    <position ctrllimited="true" ctrlrange="-.6 .6" joint="joint1" kp="1000"/>
     <!-- <motor name="joint1" gear="100" joint="joint1" /> -->
   </actuator>
 

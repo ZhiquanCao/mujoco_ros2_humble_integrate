@@ -20,6 +20,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 set(MUJOCO_DIR "/home/zhiquan/.mujoco/mujoco-3.1.2")
 
 include_directories("${MUJOCO_DIR}/include/")
+include_directories("./include/")
 
 find_library(MUJOCO_LIBRARY mujoco PATHS /home/zhiquan/.mujoco/mujoco-3.1.2/lib)
 
@@ -34,11 +35,16 @@ if(BUILD_TESTING)
   # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
+
 endif()
+
+
+FILE(GLOB c_includes include/simulate/*.cc)
+
 
 set(dependencies "geometry_msgs" "rclcpp")
 add_executable(publisher src/publisher_node.cpp)
-add_executable(subscriber src/subscriber_node.cpp)
+add_executable(subscriber src/subscriber_node.cpp ${c_includes})
 add_executable(regulator src/regulator.cpp)
 ament_target_dependencies(publisher ${dependencies})
 ament_target_dependencies(subscriber ${dependencies})

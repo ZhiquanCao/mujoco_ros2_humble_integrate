@@ -8,8 +8,12 @@
     <mesh name="rightthighfixedv2" file="rightthighfixedv2.stl" scale="0.001 0.001 0.001"/>
     <mesh name="rightshinfixedv2" file="rightshinfixedv2.stl" scale="0.001 0.001 0.001"/>
   </asset>
+
+
+
   <worldbody>
     <geom pos="0 0.05 0.3095" quat="0.707388 0.706825 0 0" type="mesh" rgba="0 0 1 1" mesh="chassisv2"/>
+
     <body name="intermediate_link" pos="0 0.05 0.3095" quat="0.707388 0.706825 0 0">
       <inertial pos="0 0 0" mass="0.1" diaginertia="0.0001 0.0001 0.0001"/>
       <joint name="right_body_thigh_lateral" pos="0 0 0" axis="0 0 1" range="-0.26 0.26"/>
@@ -29,6 +33,7 @@
         </body>
       </body>
     </body>
+    
     <body name="intermediate_link_2" pos="0.1 0.05 0.3095" quat="0.000563312 0.000562864 0.707388 0.706825">
       <inertial pos="0 0 0" mass="0.1" diaginertia="0.0001 0.0001 0.0001"/>
       <joint name="body_left_thigh_lateral" pos="0 0 0" axis="0 0 1" range="-0.26 0.26"/>
@@ -48,5 +53,7 @@
         </body>
       </body>
     </body>
+
+
   </worldbody>
 </mujoco>

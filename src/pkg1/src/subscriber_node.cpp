@@ -2,28 +2,33 @@
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "mujoco/mujoco.h"
-
+// // #include "UIUX.c"
+// #include "../include/simulate/simulate.h"
+// #include "../include/simulate/glfw_adapter.h"
+// #include "../include/simulate/array_safety.h"
+#include "../include/simulate/functions.h"
 using std::placeholders::_1;
 
 
 
-mjModel* m = nullptr; // The MuJoCo model
-mjData* d = nullptr;  // The data structure for simulation
 
+mjModel* step_m = nullptr; // The MuJoCo model
+mjData* step_d = nullptr;  // The data structure for simulation
+const char* modelname = "/home/va/om/step/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
 
 void init_mujoco() {
   char error[1000] = "Could not load model";
-  m = mj_loadXML("/home/va/om/step/mujoco_ros2_humble_integrate/src/pkg1/src/7dof_arm.xml", nullptr, error, 1000);
-  if (!m) {
+  step_m = mj_loadXML(modelname, nullptr, error, 1000);
+  if (!step_m) {
       std::cerr << error << std::endl;
       exit(1);
   }
-  d = mj_makeData(m);
+  step_d = mj_makeData(step_m);
 }
 
 void myCallback(const mjModel* m, mjData* d)
 {
-    std::cout<<"data.act: " <<d->[0] << std::endl;
+    std::cout<<"data.act: " <<d->act[0] << std::endl;
     // std::cout<<"data.actforce: " <<d->actuator_force[0] << std::endl;
     // for (int i = 0; i < m->nbody; i++) {
     //     std::cout << "Body " << i << " position: "
@@ -58,8 +63,9 @@ void init_renderer() {
   mjr_defaultContext(&con);
 
   // create scene and context
-  mjv_makeScene(m, &scn, 1000);
-  mjr_makeContext(m, &con, mjFONTSCALE_100);
+  mjv_makeScene(step_m, &scn, 1000);
+  mjr_makeContext(step_m, &con, mjFONTSCALE_100);
+
 
 
 }
@@ -72,19 +78,19 @@ void loop_renderer(){
     //  Assuming MuJoCo can simulate faster than real-time, which it usually can,
     //  this loop will finish on time for the next frame to be rendered at 60 fps.
     //  Otherwise add a cpu timer and exit this loop when it is time to render.
-    mjtNum simstart = d->time;
+    mjtNum simstart = step_d->time;
     // while( d->time - simstart < 1.0/60.0 ){
       // for (int i = 0; i < m->nu; ++i) {
       //     // d->ctrl[i] = 80;
       //     std::cout<<"d->ctrl[i] is "<<d->ctrl[i]<<std::endl;
       // }
-      mj_step(m, d);
+      mj_step(step_m, step_d);
     // }
 
     mjrRect viewport = {0, 0, 0, 0};
     glfwGetFramebufferSize(window, &viewport.width, &viewport.height);
 
-    mjv_updateScene(m, d, &opt, NULL, &cam, mjCAT_ALL, &scn);
+    mjv_updateScene(step_m, step_d, &opt, NULL, &cam, mjCAT_ALL, &scn);
     mjr_render(viewport, &scn, &con);
 
     glfwSwapBuffers(window);
@@ -99,7 +105,7 @@ void clean_renderer(){
 }
 void simulation_step() {
     // Example: simple simulation step
-    mj_step(m, d);
+    mj_step(step_m, step_d);
 
     // Handle GLFW events
     glfwPollEvents();
@@ -118,22 +124,31 @@ public:
 
 
   }
-  void init_sub(){
+  void init_sub(mj::Simulate* sim){
 
 
     init_mujoco();
     init_renderer();
 
-
-
+    // auto sim = std::make_unique<mj::Simulate>(
+    //     std::make_unique<mj::GlfwAdapter>(),
+    //     &cam, &opt, &pert, /* is_passive = */ false
+    // );
 
     std::cout<<"Subscriber Initialise";
+
+    // std::thread physicsthreadhandle(&PhysicsThread, sim, modelname);
+    // // start simulation UI loop (blocking call)
+    // sim->RenderLoop();
+    // physicsthreadhandle.join();
+
+
     auto topic_callback =
       [this](geometry_msgs::msg::Twist msg) -> void {
         // RCLCPP_INFO(this->get_logger(), "Linear: '(%f,%f,%f)'", msg.linear.x,msg.linear.z,msg.linear.z);
-        // RCLCPP_INFO(this->get_logger(), "Angular: '(%f,%f,%f)'", msg.angular.x,msg.angular.z,msg.angular.z);
-        for (int i = 0; i < m->nu; ++i) {
-            d->ctrl[i] = msg.linear.x;
+        RCLCPP_INFO(this->get_logger(), "Q: '%f'", msg.linear.x);  
+        for (int i = 0; i < step_m->nu; ++i) {
+            step_d->ctrl[i] = msg.linear.x;
             // std::cout<<"d->ctrl[i] is "<<d->ctrl[i]<<std::endl;
         }     
       };
@@ -163,18 +178,59 @@ private:
 };
 
 int main(int argc, char* argv[]) {
-    rclcpp::init(argc, argv);
-    auto node = std::make_shared<MinimalSubscriber>();
+
+  std::printf("MuJoCo version %s\n", mj_versionString());
+  if (mjVERSION_HEADER!=mj_version()) {
+    mju_error("Headers and library have different versions");
+  }
+
+  // scan for libraries in the plugin directory to load additional plugins
+  // scanPluginLibraries();
+
+  // PREPARE SIMUALTION WITH UI
+  mjvCamera cam;
+  mjv_defaultCamera(&cam);
+
+  mjvOption opt;
+  mjv_defaultOption(&opt);
+
+  mjvPerturb pert;
+  mjv_defaultPerturb(&pert);
+
+  auto sim = std::make_unique<mj::Simulate>(
+      std::make_unique<mj::GlfwAdapter>(),
+      &cam, &opt, &pert, /* is_passive = */ false
+  );
+
+
+  // INTIALISE INTERACTIVE UI
+  std::cout<<"Subscriber Initialise";
+
+  std::thread physicsthreadhandle(&PhysicsThread, sim.get(), modelname);
+  // start simulation UI loop (blocking call)
+  sim->RenderLoop();
+  physicsthreadhandle.join();
+
+
+  // INITIALISE ROS SUBSCRIBER
+  rclcpp::init(argc, argv);
+  auto node = std::make_shared<MinimalSubscriber>();
+  // mjcb_control = myCallback;
+  // rclcpp::SubscriptionOptions options;
+  // options.callback_group = my_callback_group;
+
+
+  node->init_sub(sim.get());
+  rclcpp::spin(node);
+
+
+
+
+
+
+
+
     // my_callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-
-
-    mjcb_control = myCallback;
-    // rclcpp::SubscriptionOptions options;
-    // options.callback_group = my_callback_group;
-
-
-    node->init_sub();
-    rclcpp::spin(node);
 
 
 
@@ -187,8 +243,8 @@ int main(int argc, char* argv[]) {
 
 
 
-    mj_deleteData(d);
-    mj_deleteModel(m);
+    mj_deleteData(step_d);
+    mj_deleteModel(step_m);
 
     return 0;
 }

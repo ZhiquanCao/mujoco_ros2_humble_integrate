@@ -1,0 +1,41 @@
+<mujoco model="stepMARKIV">
+
+     <!-- <compiler angle="radian"/> -->
+  <asset>
+    <mesh name="BATT" file="../scad/BATT.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="LEFTLEG" file="../scad/LEFTLEG.stl" scale="0.001 0.001 0.001"/>
+<!--     <mesh name="BATT" file="../scad/BATT.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="BATT" file="../scad/BATT.stl" scale="0.001 0.001 0.001"/> -->
+  <!--   <mesh name="rightshinv3" file="rightshinv3.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="footfixedv3" file="footfixedv3.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="chassisv2" file="chassisv2.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="rightthighfixedv2" file="rightthighfixedv2.stl" scale="0.001 0.001 0.001"/>
+    <mesh  -->name="rightshinfixedv2" file="rightshinfixedv2.stl" scale="0.001 0.001 0.001"/>
+  </asset>
+
+
+
+   <default>
+      <joint axis="1 0 0" limited="true" range="-180 180" damping="0.01"/>
+      <geom size=".1 .1 .1" type="box"/>
+   </default>
+
+   <worldbody>
+    <!-- <geom pos="0 0 0" quat="1 0 0 0" type="mesh" rgba="0 0 1 1" mesh="BATT"/> -->
+
+
+      <body>
+         <joint name="servo_1"/>
+    <geom pos="0 0 0" quat="1 0 0 0" type="mesh" rgba="0 0 1 1" mesh="LEFTLEG"/>
+      </body>
+      <body pos=".3 0 0">
+         <joint name="servo_2"/>
+         <geom/>
+      </body>
+   </worldbody>
+
+ 
+  <actuator>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="servo_1"/>
+  </actuator>
+</mujoco>

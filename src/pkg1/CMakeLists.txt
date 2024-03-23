@@ -11,7 +11,11 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(glfw3 REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Frame.msg"
+)
 
 set(MUJOCO_DIR "/home/zhiquan/.mujoco/mujoco-3.1.2")
 
@@ -35,13 +39,16 @@ endif()
 set(dependencies "geometry_msgs" "rclcpp")
 add_executable(publisher src/publisher_node.cpp)
 add_executable(subscriber src/subscriber_node.cpp)
+add_executable(regulator src/regulator.cpp)
 ament_target_dependencies(publisher ${dependencies})
 ament_target_dependencies(subscriber ${dependencies})
+ament_target_dependencies(regulator ${dependencies})
 target_link_libraries(subscriber ${MUJOCO_LIBRARY} glfw)
 
 install(TARGETS
   publisher
   subscriber
+  regulator
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

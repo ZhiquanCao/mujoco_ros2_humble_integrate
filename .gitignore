@@ -3,3 +3,16 @@ build/*
 install/*
 MUJOCO_LOG.TXT
 .vscode/*
+*cmake*/
+*.cmake
+publisher
+subscriber
+*CMake*
+Makefile
+*.ini
+AMENT_IGNORE
+src/pkg1/install
+src/pkg1/log
+src/pkg1/ros*
+src/pkg1/libpkg1*
+src/pkg1/build*

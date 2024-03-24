@@ -9,12 +9,14 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(trajectory_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Frame.msg"
+  "msg/IK6DOF.msg"
 )
 
 set(MUJOCO_DIR "/home/zhiquan/.mujoco/mujoco-3.1.2")
@@ -42,7 +44,7 @@ endif()
 FILE(GLOB c_includes include/simulate/*.cc)
 
 
-set(dependencies "geometry_msgs" "rclcpp")
+set(dependencies "geometry_msgs"  "trajectory_msgs" "rclcpp")
 add_executable(publisher src/publisher_node.cpp)
 add_executable(subscriber src/subscriber_node.cpp ${c_includes})
 add_executable(regulator src/regulator.cpp)

@@ -2601,6 +2601,149 @@ void Simulate::Render() {
 
 
 
+void Simulate::RenderLoopSetup() {
+  // Set timer callback (milliseconds)
+  mjcb_time = Timer;
+
+  // init abstract visualization
+  mjv_defaultCamera(&this->cam);
+  mjv_defaultOption(&this->opt);
+  InitializeProfiler(this);
+  InitializeSensor(this);
+
+  // make empty scene
+  if (!is_passive_) {
+    mjv_defaultScene(&this->scn);
+    mjv_makeScene(nullptr, &this->scn, kMaxGeom);
+  }
+
+  if (!this->platform_ui->IsGPUAccelerated()) {
+    this->scn.flags[mjRND_SHADOW] = 0;
+    this->scn.flags[mjRND_REFLECTION] = 0;
+  }
+
+  // select default font
+  int fontscale = ComputeFontScale(*this->platform_ui);
+  this->font = fontscale/50 - 1;
+
+  // make empty context
+  this->platform_ui->RefreshMjrContext(nullptr, fontscale);
+
+  // init state and uis
+  std::memset(&this->uistate, 0, sizeof(mjuiState));
+  std::memset(&this->ui0, 0, sizeof(mjUI));
+  std::memset(&this->ui1, 0, sizeof(mjUI));
+
+  auto [buf_width, buf_height] = this->platform_ui->GetFramebufferSize();
+  this->uistate.nrect = 1;
+  this->uistate.rect[0].width = buf_width;
+  this->uistate.rect[0].height = buf_height;
+
+  this->ui0.spacing = mjui_themeSpacing(this->spacing);
+  this->ui0.color = mjui_themeColor(this->color);
+  this->ui0.predicate = UiPredicate;
+  this->ui0.rectid = 1;
+  this->ui0.auxid = 0;
+
+  this->ui1.spacing = mjui_themeSpacing(this->spacing);
+  this->ui1.color = mjui_themeColor(this->color);
+  this->ui1.predicate = UiPredicate;
+  this->ui1.rectid = 2;
+  this->ui1.auxid = 1;
+
+  // set GUI adapter callbacks
+  this->uistate.userdata = this;
+  this->platform_ui->SetEventCallback(UiEvent);
+  this->platform_ui->SetLayoutCallback(UiLayout);
+
+  // populate uis with standard sections
+  this->ui0.userdata = this;
+  this->ui1.userdata = this;
+  mjui_add(&this->ui0, defFile);
+  mjui_add(&this->ui0, this->def_option);
+  mjui_add(&this->ui0, this->def_simulation);
+  mjui_add(&this->ui0, this->def_watch);
+  UiModify(&this->ui0, &this->uistate, &this->platform_ui->mjr_context());
+  UiModify(&this->ui1, &this->uistate, &this->platform_ui->mjr_context());
+
+  // set VSync to initial value
+  this->platform_ui->SetVSync(this->vsync);
+
+  frames_ = 0;
+  last_fps_update_ = mj::Simulate::Clock::now();
+
+
+}
+void Simulate::RenderLoopLoop() {
+  // std::cout<<"Subscriber Initialising...\n";
+  // printf("d\n");
+  // return ;
+    {
+      const MutexLock lock(this->mtx);
+
+      // load model (not on first pass, to show "loading" label)
+      if (this->loadrequest==1) {
+        this->LoadOnRenderThread();
+      } else if (this->loadrequest == 2) {
+        this->loadrequest = 1;
+      }
+
+      // poll and handle events
+      this->platform_ui->PollEvents();
+
+      // upload assets if requested
+      bool upload_notify = false;
+      if (hfield_upload_ != -1) {
+        mjr_uploadHField(m_, &platform_ui->mjr_context(), hfield_upload_);
+        hfield_upload_ = -1;
+        upload_notify = true;
+      }
+      if (mesh_upload_ != -1) {
+        mjr_uploadMesh(m_, &platform_ui->mjr_context(), mesh_upload_);
+        mesh_upload_ = -1;
+        upload_notify = true;
+      }
+      if (texture_upload_ != -1) {
+        mjr_uploadTexture(m_, &platform_ui->mjr_context(), texture_upload_);
+        texture_upload_ = -1;
+        upload_notify = true;
+      }
+      if (upload_notify) {
+        cond_upload_.notify_all();
+      }
+
+      // update scene, doing a full sync if in fully managed mode
+      if (!this->is_passive_) {
+        Sync();
+      } else {
+        scnstate_.data.warning[mjWARN_VGEOMFULL].number += mjv_updateSceneFromState(
+            &scnstate_, &this->opt, &this->pert, &this->cam, mjCAT_ALL, &this->scn);
+      }
+    }  // MutexLock (unblocks simulation thread)
+
+    // render while simulation is running
+    this->Render();
+
+    // update FPS stat, at most 5 times per second
+    auto now = mj::Simulate::Clock::now();
+    double interval = Seconds(now - last_fps_update_).count();
+    ++frames_;
+    if (interval > 0.2) {
+      last_fps_update_ = now;
+      fps_ = frames_ / interval;
+      frames_ = 0;
+    }
+}
+void Simulate::RenderLoopClean() {
+  // const MutexLock lock(this->mtx);
+  mjv_freeScene(&this->scn);
+  if (is_passive_) {
+    mjv_freeSceneState(&scnstate_);
+  }
+
+  this->exitrequest.store(2);
+}
+
 void Simulate::RenderLoop() {
   // Set timer callback (milliseconds)
   mjcb_time = Timer;

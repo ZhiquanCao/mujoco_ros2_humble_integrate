@@ -1,6 +1,7 @@
 #include <memory>
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/polygon.hpp"
 #include "mujoco/mujoco.h"
 // // #include "UIUX.c"
 // #include "../include/simulate/simulate.h"
@@ -124,11 +125,15 @@ public:
 
 
   }
-  void init_sub(mj::Simulate* sim){
+  // static void update(mj::Simulate* sim){
+  //   sim->RenderLoopLoop();
+  // }
+  void  init_sub(mj::Simulate* sim){
 
+    sim->RenderLoopSetup();
 
-    init_mujoco();
-    init_renderer();
+    // init_mujoco();
+    // init_renderer();
 
     // auto sim = std::make_unique<mj::Simulate>(
     //     std::make_unique<mj::GlfwAdapter>(),
@@ -139,27 +144,33 @@ public:
 
     // std::thread physicsthreadhandle(&PhysicsThread, sim, modelname);
     // // start simulation UI loop (blocking call)
-    // sim->RenderLoop();
     // physicsthreadhandle.join();
 
 
     auto topic_callback =
-      [this](geometry_msgs::msg::Twist msg) -> void {
+      [this](geometry_msgs::msg::Polygon msg) -> void {
         // RCLCPP_INFO(this->get_logger(), "Linear: '(%f,%f,%f)'", msg.linear.x,msg.linear.z,msg.linear.z);
-        RCLCPP_INFO(this->get_logger(), "Q: '%f'", msg.linear.x);  
-        for (int i = 0; i < step_m->nu; ++i) {
-            step_d->ctrl[i] = msg.linear.x;
+        RCLCPP_INFO(this->get_logger(), "Q: '%f'", msg.points[0].x);  
+        for (int i = 0; i < m->nu; ++i) {
+            d->ctrl[i] = msg.points[i].x;
             // std::cout<<"d->ctrl[i] is "<<d->ctrl[i]<<std::endl;
         }     
       };
 
-     subscription_ = this->create_subscription<geometry_msgs::msg::Twist>(
+     subscription_ = this->create_subscription<geometry_msgs::msg::Polygon>(
       "turtle1/cmd_vel", 10, topic_callback);
 
     auto reg_callback =
-      [this](geometry_msgs::msg::Twist msg) -> void {
+      [this,sim](geometry_msgs::msg::Twist msg) -> void {
         RCLCPP_INFO(this->get_logger(), "FRAME: '%f'", msg.linear.x);  
-        loop_renderer();  
+        // loop_renderer();  
+            // MinimalSubscriber::update(sim.get())
+          if (!sim->platform_ui->ShouldCloseWindow() && !sim->exitrequest.load()) {
+            sim->RenderLoopLoop();
+          }else{
+            sim->RenderLoopClean();
+            rclcpp::shutdown();
+          }
       };
 
      regulation_ = this->create_subscription<geometry_msgs::msg::Twist>(
@@ -171,7 +182,7 @@ private:
   //   RCLCPP_INFO(this->get_logger(), "Received - Linear Velocity x: '%f', Linear Velocity y: '%f', Angular Velocity: '%f'",
   //               msg->linear.x, msg->linear.y, msg->angular.z);
   // }
-  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr subscription_;
+  rclcpp::Subscription<geometry_msgs::msg::Polygon>::SharedPtr subscription_;
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr regulation_;
   // rclcpp::CallbackGroup::SharedPtr callback_group_;
   // rclcpp::SubscriptionOptions::SharedPtr options_;
@@ -208,8 +219,7 @@ int main(int argc, char* argv[]) {
 
   std::thread physicsthreadhandle(&PhysicsThread, sim.get(), modelname);
   // start simulation UI loop (blocking call)
-  sim->RenderLoop();
-  physicsthreadhandle.join();
+
 
 
   // INITIALISE ROS SUBSCRIBER
@@ -225,9 +235,10 @@ int main(int argc, char* argv[]) {
 
 
 
+  // sim->RenderLoop();
+  physicsthreadhandle.join();
 
-
-
+  // sim->RenderLoopClsean();
 
 
     // my_callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
@@ -238,8 +249,9 @@ int main(int argc, char* argv[]) {
 
 
     rclcpp::shutdown();
-    
-    clean_renderer();
+    sim->RenderLoopClean();
+
+    // clean_renderer();
 
 
 

@@ -19,9 +19,10 @@ module sequentialHull(){
 module LX16A(){
 
 
+	color("white")
 	cube([30,47,25],center=true);
 
-
+	color("grey")
 	translate([-25,13,0])
 	rotate([0,90,0])
 	cylinder(h=45, r=9, center=false, $fn=20);
@@ -212,14 +213,14 @@ module left_leg()
 	left_foot();
 }
 module body(){
-	batt();
-	compute();
+	// batt();
+	// compute();
 	left_leg();
 	mirror([0,1,0])
 	left_leg();
 }
 
-
+translate([0,57.5,0])
 body();
 
 

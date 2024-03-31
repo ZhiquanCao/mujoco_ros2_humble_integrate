@@ -11,11 +11,11 @@
 using std::placeholders::_1;
 
 
-
-
 mjModel* step_m = nullptr; // The MuJoCo model
 mjData* step_d = nullptr;  // The data structure for simulation
-const char* modelname = "/home/va/om/step/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
+// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
+const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
+
 
 void init_mujoco() {
   char error[1000] = "Could not load model";
@@ -30,13 +30,6 @@ void init_mujoco() {
 void myCallback(const mjModel* m, mjData* d)
 {
     std::cout<<"data.act: " <<d->act[0] << std::endl;
-    // std::cout<<"data.actforce: " <<d->actuator_force[0] << std::endl;
-    // for (int i = 0; i < m->nbody; i++) {
-    //     std::cout << "Body " << i << " position: "
-    //               << d->xpos[i * 3] << ", "
-    //               << d->xpos[i * 3 + 1] << ", "
-    //               << d->xpos[i * 3 + 2] << std::endl;
-    // }
 }
 
 
@@ -48,6 +41,7 @@ mjvScene scn;                       // abstract scene
 mjrContext con;                     // custom GPU context
 GLFWwindow* window;
 
+/*
 void init_renderer() {
   // ... load model and data
 
@@ -80,11 +74,7 @@ void loop_renderer(){
     //  this loop will finish on time for the next frame to be rendered at 60 fps.
     //  Otherwise add a cpu timer and exit this loop when it is time to render.
     mjtNum simstart = step_d->time;
-    // while( d->time - simstart < 1.0/60.0 ){
-      // for (int i = 0; i < m->nu; ++i) {
-      //     // d->ctrl[i] = 80;
-      //     std::cout<<"d->ctrl[i] is "<<d->ctrl[i]<<std::endl;
-      // }
+
       mj_step(step_m, step_d);
     // }
 
@@ -111,7 +101,7 @@ void simulation_step() {
     // Handle GLFW events
     glfwPollEvents();
 }
-
+*/
 
 
 class MinimalSubscriber : public rclcpp::Node
@@ -123,81 +113,50 @@ public:
     // callback_group_ = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive,true);
     // options_.callback_group = callback_group_;
 
-
+    subscription_ = this->create_subscription<geometry_msgs::msg::Polygon>(
+      "turtle1/cmd_vel", 10, [this](geometry_msgs::msg::Polygon msg){this->topic_callback(msg);});
   }
   // static void update(mj::Simulate* sim){
-  //   sim->RenderLoopLoop();
+  //   sim->RenderLoopinit_subLoop();
   // }
-  void  init_sub(mj::Simulate* sim){
 
+  /*
+  void init_sub(mj::Simulate* sim){
     sim->RenderLoopSetup();
 
-    // init_mujoco();
-    // init_renderer();
-
-    // auto sim = std::make_unique<mj::Simulate>(
-    //     std::make_unique<mj::GlfwAdapter>(),
-    //     &cam, &opt, &pert, /* is_passive = */ false
-    // );
-
-    std::cout<<"Subscriber Initialise";
-
-    // std::thread physicsthreadhandle(&PhysicsThread, sim, modelname);
-    // // start simulation UI loop (blocking call)
-    // physicsthreadhandle.join();
-
-
-    auto topic_callback =
-      [this](geometry_msgs::msg::Polygon msg) -> void {
-        // RCLCPP_INFO(this->get_logger(), "Linear: '(%f,%f,%f)'", msg.linear.x,msg.linear.z,msg.linear.z);
-        RCLCPP_INFO(this->get_logger(), "Q: '%f'", msg.points[0].x);  
-        for (int i = 0; i < m->nu; ++i) {
-            d->ctrl[i] = msg.points[i].x;
-            // std::cout<<"d->ctrl[i] is "<<d->ctrl[i]<<std::endl;
-        }     
-      };
-
-     subscription_ = this->create_subscription<geometry_msgs::msg::Polygon>(
-      "turtle1/cmd_vel", 10, topic_callback);
+    
 
     auto reg_callback =
       [this,sim](geometry_msgs::msg::Twist msg) -> void {
-        RCLCPP_INFO(this->get_logger(), "FRAME: '%f'", msg.linear.x);  
-        // loop_renderer();  
-            // MinimalSubscriber::update(sim.get())
-          if (!sim->platform_ui->ShouldCloseWindow() && !sim->exitrequest.load()) {
-            sim->RenderLoopLoop();
-          }else{
-            sim->RenderLoopClean();
-            rclcpp::shutdown();
-          }
+        
       };
 
      regulation_ = this->create_subscription<geometry_msgs::msg::Twist>(
       "turtle1/frames", 10, reg_callback);   
   }
+  */
 private:
-  // void topic_callback(const geometry_msgs::msg::Twist::SharedPtr msg) const
-  // {
-  //   RCLCPP_INFO(this->get_logger(), "Received - Linear Velocity x: '%f', Linear Velocity y: '%f', Angular Velocity: '%f'",
-  //               msg->linear.x, msg->linear.y, msg->angular.z);
-  // }
+  void topic_callback(geometry_msgs::msg::Polygon msg){
+        RCLCPP_INFO(this->get_logger(), "Q: '%f'", msg.points[0].x); 
+
+        // const std::unique_lock<std::recursive_mutex> lock(sim->mtx);
+
+        for (int i = 0; i < m->nu; ++i) {
+            d->ctrl[i] = msg.points[i].x;
+        } 
+        // if (!sim->platform_ui->ShouldCloseWindow() && !sim->exitrequest.load()) {
+        //   sim->RenderLoopLoop();
+        // }else{
+        //   sim->RenderLoopClean();
+        //   rclcpp::shutdown();
+        // }
+      };
   rclcpp::Subscription<geometry_msgs::msg::Polygon>::SharedPtr subscription_;
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr regulation_;
-  // rclcpp::CallbackGroup::SharedPtr callback_group_;
-  // rclcpp::SubscriptionOptions::SharedPtr options_;
+
 };
 
-int main(int argc, char* argv[]) {
-
-  std::printf("MuJoCo version %s\n", mj_versionString());
-  if (mjVERSION_HEADER!=mj_version()) {
-    mju_error("Headers and library have different versions");
-  }
-
-  // scan for libraries in the plugin directory to load additional plugins
-  // scanPluginLibraries();
-
+void RenderThread(const char* filename) {
   // PREPARE SIMUALTION WITH UI
   mjvCamera cam;
   mjv_defaultCamera(&cam);
@@ -213,50 +172,46 @@ int main(int argc, char* argv[]) {
       &cam, &opt, &pert, /* is_passive = */ false
   );
 
+  std::thread physicsThreadHandle(&PhysicsThread, sim.get(), filename);
+  sim->RenderLoop();
+  physicsThreadHandle.join();
+
+}
+
+int main(int argc, char* argv[]) {
+
+  std::printf("MuJoCo version %s\n", mj_versionString());
+  if (mjVERSION_HEADER!=mj_version()) {
+    mju_error("Headers and library have different versions");
+  }
+
+  // scan for libraries in the plugin directory to load additional plugins
+  // scanPluginLibraries();
+
 
   // INTIALISE INTERACTIVE UI
-  std::cout<<"Subscriber Initialise";
-
-  std::thread physicsthreadhandle(&PhysicsThread, sim.get(), modelname);
-  // start simulation UI loop (blocking call)
+  std::cout<<"Subscriber Initialise" << std::endl;
 
 
+  std::thread renderThreadHandle(RenderThread, modelname);
+  // sim->RenderLoop();
 
   // INITIALISE ROS SUBSCRIBER
   rclcpp::init(argc, argv);
   auto node = std::make_shared<MinimalSubscriber>();
-  // mjcb_control = myCallback;
-  // rclcpp::SubscriptionOptions options;
-  // options.callback_group = my_callback_group;
 
-
-  node->init_sub(sim.get());
+  //node->init_sub(sim.get());
+  
   rclcpp::spin(node);
 
+  renderThreadHandle.join();
 
+  rclcpp::shutdown();
+  //sim->RenderLoopClean();
 
-  // sim->RenderLoop();
-  physicsthreadhandle.join();
+  // clean_renderer();
+  //mj_deleteData(step_d);
+  //mj_deleteModel(step_m);
 
-  // sim->RenderLoopClsean();
-
-
-    // my_callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-
-
-
-
-
-
-    rclcpp::shutdown();
-    sim->RenderLoopClean();
-
-    // clean_renderer();
-
-
-
-    mj_deleteData(step_d);
-    mj_deleteModel(step_m);
-
-    return 0;
+  return 0;
 }

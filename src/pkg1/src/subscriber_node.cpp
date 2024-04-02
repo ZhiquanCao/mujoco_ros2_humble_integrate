@@ -10,10 +10,8 @@ using std::placeholders::_1;
 
 mjModel* step_m = nullptr; // The MuJoCo model
 mjData* step_d = nullptr;  // The data structure for simulation
-const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
-// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/example.xml";
-
-// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
+// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
+const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
 
 // MuJoCo data structures
 mjvCamera cam;                      // abstract camera

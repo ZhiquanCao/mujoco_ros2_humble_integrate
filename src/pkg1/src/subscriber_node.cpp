@@ -10,17 +10,16 @@ using std::placeholders::_1;
 
 mjModel* step_m = nullptr; // The MuJoCo model
 mjData* step_d = nullptr;  // The data structure for simulation
-// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
-const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
+const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
+// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/example.xml";
 
+// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
 
-#include "GLFW/glfw3.h"
 // MuJoCo data structures
 mjvCamera cam;                      // abstract camera
 mjvOption opt;                      // visualization options
 mjvScene scn;                       // abstract scene
 mjrContext con;                     // custom GPU context
-GLFWwindow* window;
 
 class MinimalSubscriber : public rclcpp::Node
 {
@@ -36,9 +35,13 @@ private:
   void topic_callback(geometry_msgs::msg::Polygon::SharedPtr msg){
         RCLCPP_INFO(this->get_logger(), "Q: '%f'", msg->points[0].x); 
         const std::unique_lock<std::recursive_mutex> lock(sim->mtx);
-        for (int i = 0; i < m->nu; ++i) {
+        if (m != nullptr) {
+          for (int i = 0; i < m->nu; ++i) {
             d->ctrl[i] = msg->points[i].x;
-        } 
+          } 
+        } else {
+          RCLCPP_ERROR(this->get_logger(), "mjData is not properly initialized");
+        }
       };
   mj::Simulate* sim;
   rclcpp::Subscription<geometry_msgs::msg::Polygon>::SharedPtr subscription_;

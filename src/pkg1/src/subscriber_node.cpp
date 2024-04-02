@@ -8,16 +8,8 @@
 using std::placeholders::_1;
 
 
-mjModel* step_m = nullptr; // The MuJoCo model
-mjData* step_d = nullptr;  // The data structure for simulation
 // const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
 const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
-
-// MuJoCo data structures
-mjvCamera cam;                      // abstract camera
-mjvOption opt;                      // visualization options
-mjvScene scn;                       // abstract scene
-mjrContext con;                     // custom GPU context
 
 class MinimalSubscriber : public rclcpp::Node
 {
@@ -53,6 +45,10 @@ int main(int argc, char* argv[]) {
   // PREPARE SIMUALTION WITH UI
   mjvCamera cam;
   mjv_defaultCamera(&cam);
+
+  // cam.distance = 0.2; // Adjusts the distance of the camera from the point it is looking at
+  // cam.azimuth = 45;   // Adjusts the azimuth angle (rotation around the vertical axis)
+  // cam.elevation = -15; // Adjusts the elevation angle (rotation in the plane perpendicular to the azimuth direction)
 
   mjvOption opt;
   mjv_defaultOption(&opt);

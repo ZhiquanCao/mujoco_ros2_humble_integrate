@@ -25,8 +25,8 @@ GLFWwindow* window;
 class MinimalSubscriber : public rclcpp::Node
 {
 public:
-  MinimalSubscriber()
-  : Node("minimal_subscriber")
+  MinimalSubscriber(mj::Simulate* sim_ptr)
+  : Node("minimal_subscriber"), sim(sim_ptr)
   {
     subscription_ = this->create_subscription<geometry_msgs::msg::Polygon>(
       "turtle1/cmd_vel", 10, [this](const geometry_msgs::msg::Polygon::SharedPtr msg){this->topic_callback(msg);});
@@ -35,20 +35,16 @@ public:
 private:
   void topic_callback(geometry_msgs::msg::Polygon::SharedPtr msg){
         RCLCPP_INFO(this->get_logger(), "Q: '%f'", msg->points[0].x); 
-
-        // const std::unique_lock<std::recursive_mutex> lock(sim->mtx);
-
+        const std::unique_lock<std::recursive_mutex> lock(sim->mtx);
         for (int i = 0; i < m->nu; ++i) {
             d->ctrl[i] = msg->points[i].x;
         } 
       };
+  mj::Simulate* sim;
   rclcpp::Subscription<geometry_msgs::msg::Polygon>::SharedPtr subscription_;
-  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr regulation_;
-
 };
 
 void RosThread(std::shared_ptr<MinimalSubscriber> node) {
-  //node->init_sub(sim.get());
   rclcpp::spin(node);
 }
 
@@ -69,7 +65,7 @@ int main(int argc, char* argv[]) {
   );
 
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<MinimalSubscriber>();
+  auto node = std::make_shared<MinimalSubscriber>(sim.get());
 
   std::thread physicsThreadHandle(&PhysicsThread, sim.get(), modelname);
   std::thread rosThreadHandle(&RosThread, node);
@@ -81,12 +77,6 @@ int main(int argc, char* argv[]) {
   rosThreadHandle.join();
   physicsThreadHandle.join();
   rclcpp::shutdown();
-
-  //sim->RenderLoopClean();
-
-  // clean_renderer();
-  //mj_deleteData(step_d);
-  //mj_deleteModel(step_m);
 
   return 0;
 }

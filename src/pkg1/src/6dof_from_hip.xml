@@ -1,6 +1,19 @@
 <mujoco model="6dof">
   <compiler angle="radian"/>
+
+   <visual>
+    <map force="0.1" zfar="30"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global offwidth="2560" offheight="1440" elevation="-20" azimuth="120"/>
+  </visual>
   <asset>
+
+    <texture type="skybox" builtin="gradient" rgb1=".3 .5 .7" rgb2="0 0 0" width="32" height="512"/>
+    <texture name="body" type="cube" builtin="flat" mark="cross" width="128" height="128" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+    <material name="body" texture="body" texuniform="true" rgba="0.8 0.6 .4 1"/>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
+  
     <mesh name="leftthighfixedv1" file="leftthighfixedv1.stl" scale="0.001 0.001 0.001"/>
     <mesh name="rightshinv3" file="rightshinv3.stl" scale="0.001 0.001 0.001"/>
     <mesh name="footfixedv3" file="footfixedv3.stl" scale="0.001 0.001 0.001"/>
@@ -8,6 +21,7 @@
     <mesh name="rightthighfixedv2" file="rightthighfixedv2.stl" scale="0.001 0.001 0.001"/>
     <mesh name="rightshinfixedv2" file="rightshinfixedv2.stl" scale="0.001 0.001 0.001"/>
   </asset>
+
   <worldbody>
     <geom pos="0 0.05 0.3095" quat="0.707388 0.706825 0 0" type="mesh" rgba="0 0 1 1" mesh="chassisv2"/>
     <body name="intermediate_link" pos="0 0.05 0.3095" quat="0.707388 0.706825 0 0">
@@ -49,4 +63,13 @@
       </body>
     </body>
   </worldbody>
+  <!-- Actuator definition for controlling the 6dof -->
+  <actuator>
+    <motor name="right_body_thigh_motor" joint="right_body_thigh" ctrlrange="-1 1"/>
+    <motor name="right_thigh_shin_motor" joint="right_thigh_shin" ctrlrange="-1 1"/>
+    <motor name="right_shin_foot_motor" joint="right_shin_foot" ctrlrange="-1 1"/>
+    <motor name="left_body_thigh_motor" joint="body_left_thigh" ctrlrange="-1 1"/>
+    <motor name="left_thigh_shin_motor" joint="left_thigh_shin" ctrlrange="-1 1"/>
+    <motor name="left_shin_foot_motor" joint="left_shin_foot" ctrlrange="-1 1"/>
+  </actuator>
 </mujoco>

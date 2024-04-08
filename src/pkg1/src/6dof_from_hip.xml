@@ -1,17 +1,32 @@
 <mujoco model="6dof">
-  <compiler angle="radian"/>
-  <asset>
-    <mesh name="leftthighfixedv1" file="leftthighfixedv1.stl" scale="0.001 0.001 0.001"/>
-    <mesh name="rightshinv3" file="rightshinv3.stl" scale="0.001 0.001 0.001"/>
-    <mesh name="footfixedv3" file="footfixedv3.stl" scale="0.001 0.001 0.001"/>
-    <mesh name="chassisv2" file="chassisv2.stl" scale="0.001 0.001 0.001"/>
-    <mesh name="rightthighfixedv2" file="rightthighfixedv2.stl" scale="0.001 0.001 0.001"/>
-    <mesh name="rightshinfixedv2" file="rightshinfixedv2.stl" scale="0.001 0.001 0.001"/>
-  </asset>
+    <compiler angle="radian"/>
+    <option gravity="0 0 -9.8"/>
 
+    <asset>
+        <!-- Texture for the background -->
+        <texture type="skybox" builtin="gradient" rgb1="0 0 0" rgb2="0 0 0" width="512" height="512"/>
+        <texture name="body" type="cube" builtin="flat" mark="cross" width="127" height="1278"
+                 rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+        <material name="body" texture="body" texuniform="true" rgba="0.8 0.6 .4 1"/>
+        <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+        <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2" shininess="1.0"/>
+
+         <mesh name="leftthighfixedv1" file="leftthighfixedv1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="rightshinv3" file="rightshinv3.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="footfixedv3" file="footfixedv3.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="chassisv2" file="chassisv2.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="rightthighfixedv2" file="rightthighfixedv2.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="rightshinfixedv2" file="rightshinfixedv2.stl" scale="0.001 0.001 0.001"/>
+    </asset>
 
 
   <worldbody>
+
+        <!-- Define the ground geometry -->
+        <body name="ground" pos="0 0 -0.1">
+            <geom type="plane" size="10 10 0.1" material="grid"/>
+        </body>
+
     <body>
       <joint name="free_joint" pos="0 0 0" type="free"/>
       <inertial pos="0 0 0" mass="0.1" diaginertia="0.0001 0.0001 0.0001"/>
@@ -58,12 +73,14 @@
       </body>
 
     </body>
-    <body>
-      <geom type="box" pos="0 0 0" size="1 1 0.05" rgba="0.5 0.5 0.5 1"/>
-      <!-- <geom type="plane" pos="0 0 0" size="1 1 0.05" rgba="0.5 0.5 0.5 1"/> -->
-
-    </body>
-
+    
+     <!-- Camera definitions -->
+      <camera name="back" pos="-3 0 1" xyaxes="0 -1 0 1 0 2" mode="trackcom"/>
+      <camera name="side" pos="0 -3 1" xyaxes="1 0 0 0 1 2" mode="trackcom"/>
+      <body name="head" pos="0 0 .19">
+        <camera name="egocentric" pos=".09 0 0" xyaxes="0 -1 0 .1 0 1" fovy="80"/>
+      </body>
+      
   </worldbody>
 
   <actuator>

@@ -8,8 +8,8 @@
 using std::placeholders::_1;
 
 
-// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
-const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
+const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
+// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
 
 class MinimalSubscriber : public rclcpp::Node
 {
@@ -44,11 +44,23 @@ void RosThread(std::shared_ptr<MinimalSubscriber> node) {
 int main(int argc, char* argv[]) {
   // PREPARE SIMUALTION WITH UI
   mjvCamera cam;
-  mjv_defaultCamera(&cam);
+  // mjv_defaultCamera(&cam); 
 
-  // cam.distance = 0.2; // Adjusts the distance of the camera from the point it is looking at
-  // cam.azimuth = 45;   // Adjusts the azimuth angle (rotation around the vertical axis)
-  // cam.elevation = -15; // Adjusts the elevation angle (rotation in the plane perpendicular to the azimuth direction)
+  cam.type = mjCAMERA_FREE;
+  cam.lookat[0] = 0;    // x-coordinate of the point to look at
+  cam.lookat[1] = 2000;    // y-coordinate of the point to look at
+  cam.lookat[2] = 0;    // z-coordinate of the point to look at
+  cam.distance = 200.0;   // distance from the lookat point
+  cam.azimuth = 180;     // rotation around the vertical axis, in degrees
+  cam.elevation = 0; 
+
+  // m.cam_mode[0] = mjCAMERA_TRACKING; // Set the camera mode to tracking
+  // m.cam_bodyid[0] = body_id_to_track; // Set the body ID the camera should track
+
+  // // Optionally, if you want to manually set camera parameters
+  // m.cam_pos[0] = x_position; // Set the X position
+  // m.cam_pos[1] = y_position; // Set the Y position
+  // m.cam_pos[2] = z_position; // Set the Z position
 
   mjvOption opt;
   mjv_defaultOption(&opt);

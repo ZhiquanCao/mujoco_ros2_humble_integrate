@@ -36,12 +36,12 @@ using namespace std::chrono_literals;
 // };
 
 float walk_trajs[4][6] ={
-{  -0.0,  0.0,   0.0,  0.0,  0.0,  0.0},
+{  -20.0,  20.0,   0.0,  0.0,  0.0,  0.0},
 {  -0.0,   0.0,  0.0,  0.0,  0.0,  0.0},
 {  -0.0,   0.0,  0.0,   -0.0,  0.0,  0.0},
 {  -0.0,   0.0,  0.0,  0.0,  0.0,  0.0}
 };
-
+//l_thigh, l_knee, r_thigh, r_knee, l_hip, r_hip
 class MinimalPublisher : public rclcpp::Node
 {
   public:

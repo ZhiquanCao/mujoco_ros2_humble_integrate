@@ -16,3 +16,4 @@ src/pkg1/log
 src/pkg1/ros*
 src/pkg1/libpkg1*
 src/pkg1/build*
+src/pkg1/src/humanoid.xml

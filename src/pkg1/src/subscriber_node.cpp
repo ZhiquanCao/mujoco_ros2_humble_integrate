@@ -46,13 +46,13 @@ int main(int argc, char* argv[]) {
   mjvCamera cam;
   // mjv_defaultCamera(&cam); 
 
-  cam.type = mjCAMERA_FREE;
-  cam.lookat[0] = 0;    // x-coordinate of the point to look at
-  cam.lookat[1] = 2000;    // y-coordinate of the point to look at
-  cam.lookat[2] = 0;    // z-coordinate of the point to look at
-  cam.distance = 200.0;   // distance from the lookat point
-  cam.azimuth = 180;     // rotation around the vertical axis, in degrees
-  cam.elevation = 0; 
+  // cam.type = mjCAMERA_FREE;
+  // cam.lookat[0] = 0;    // x-coordinate of the point to look at
+  // cam.lookat[1] = 2000;    // y-coordinate of the point to look at
+  // cam.lookat[2] = 0;    // z-coordinate of the point to look at
+  // cam.distance = 200.0;   // distance from the lookat point
+  // cam.azimuth = 180;     // rotation around the vertical axis, in degrees
+  // cam.elevation = 0; 
 
   // m.cam_mode[0] = mjCAMERA_TRACKING; // Set the camera mode to tracking
   // m.cam_bodyid[0] = body_id_to_track; // Set the body ID the camera should track

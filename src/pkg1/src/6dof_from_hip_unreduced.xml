@@ -11,12 +11,12 @@
         <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
         <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2" shininess="1.0"/>
 
-         <mesh name="leftthighfixedv1" file="convex_hull_stl/leftthighfixedv1.stl" scale="0.0001 0.0001 0.0001"/>
-        <mesh name="rightshinv3" file="convex_hull_stl/rightshinv3.stl" scale="0.0001 0.0001 0.0001"/>
-        <mesh name="footfixedv3" file="convex_hull_stl/footfixedv3.stl" scale="0.0001 0.0001 0.0001"/>
+         <mesh name="leftthighfixedv1" file="leftthighfixedv1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="rightshinv3" file="rightshinv3.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="footfixedv3" file="footfixedv3.stl" scale="0.001 0.001 0.001"/>
         <mesh name="chassisv2" file="chassisv2.stl" scale="0.001 0.001 0.001"/>
-        <mesh name="rightthighfixedv2" file="convex_hull_stl/rightthighfixedv2.stl" scale="0.0001 0.0001 0.0001"/>
-        <mesh name="rightshinfixedv2" file="convex_hull_stl/rightshinfixedv2.stl" scale="0.0001 0.0001 0.0001"/>
+        <mesh name="rightthighfixedv2" file="rightthighfixedv2.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="rightshinfixedv2" file="rightshinfixedv2.stl" scale="0.001 0.001 0.001"/>
     </asset>
 
     <visual>

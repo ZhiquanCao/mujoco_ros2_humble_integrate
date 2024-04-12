@@ -8,7 +8,7 @@
 using std::placeholders::_1;
 
 
-const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
+const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip_unreduced.xml";
 // const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
 
 class MinimalSubscriber : public rclcpp::Node
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
 
   // scan for libraries in the plugin directory to load additional plugins
   // scanPluginLibraries();
-  std::cout<< "joining threads" <<std::endl;
+  //std::cout<< "joining threads" <<std::endl;
   rosThreadHandle.join();
   physicsThreadHandle.join();
   rclcpp::shutdown();

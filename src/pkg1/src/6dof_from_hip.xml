@@ -39,7 +39,7 @@
       <inertial pos="0 0 0" mass="0.1" diaginertia="0.0001 0.0001 0.0001"/>
 
       <geom pos="0 0.05 0.3095" quat="0.707388 0.706825 0 0" type="mesh" rgba="0 0 1 1" mesh="chassisv2"/>
-      <site name="imu_site" pos="0 0.05 0" />
+      <site name="imu_site" pos="0 0.05 0.3095" />
       <body name="intermediate_link" pos="0 0.05 0.3095" quat="0.707388 0.706825 0 0">
         <inertial pos="0 0 0" mass="0.1" diaginertia="0.0001 0.0001 0.0001"/>
         <joint name="right_body_thigh_lateral" pos="0 0 0" axis="0 0 1" range="-0.26 0.26" damping="0.5"/>

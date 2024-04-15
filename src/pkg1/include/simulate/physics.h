@@ -511,11 +511,10 @@ void PhysicsThread(mj::Simulate* sim, const char* filename) {
       sim->LoadMessageClear();
     }
   }
-  rclcpp::init(0, nullptr);
+
   auto sim_publisher_node = std::make_shared<SimPublisher>();
   PhysicsLoop(*sim, sim_publisher_node);
 
-  // delete everything we allocated
   rclcpp::shutdown();
   free(ctrlnoise);
   mj_deleteData(d);

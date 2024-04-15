@@ -14,9 +14,11 @@ find_package(nav_msgs REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
+
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Frame.msg"
   "msg/IK6DOF.msg"
+  "msg/ImuData.msg"
 )
 
 set(MUJOCO_DIR "/home/zhiquan/.mujoco/mujoco-3.1.2")
@@ -24,7 +26,7 @@ set(MUJOCO_DIR "/home/zhiquan/.mujoco/mujoco-3.1.2")
 include_directories("${MUJOCO_DIR}/include/")
 include_directories("./include/")
 
-find_library(MUJOCO_LIBRARY mujoco PATHS /home/zhiquan/.mujoco/mujoco-3.1.2/lib)
+find_library(MUJOCO_LIBRARY mujoco PATHS /home/zhiquan/.mujoco/mujoco-3.1.2/lib) 
 
 
 if(BUILD_TESTING)
@@ -43,20 +45,19 @@ endif()
 
 FILE(GLOB c_includes include/simulate/*.cc)
 
-
-set(dependencies "geometry_msgs"  "trajectory_msgs" "rclcpp")
+set(dependencies "geometry_msgs"  "trajectory_msgs" "rclcpp" )
 add_executable(publisher src/publisher_node.cpp)
 add_executable(subscriber src/subscriber_node.cpp ${c_includes})
-add_executable(regulator src/regulator.cpp)
 ament_target_dependencies(publisher ${dependencies})
 ament_target_dependencies(subscriber ${dependencies})
-ament_target_dependencies(regulator ${dependencies})
+rosidl_target_interfaces(subscriber ${PROJECT_NAME} "rosidl_typesupport_cpp") # Where to find the generated struct file for defined msg; used along with #include "pkg1/msg/imu.hpp"
+
 target_link_libraries(subscriber ${MUJOCO_LIBRARY} glfw)
+
 
 install(TARGETS
   publisher
   subscriber
-  regulator
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

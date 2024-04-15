@@ -23,11 +23,18 @@
 #include <new>
 #include <string>
 #include <thread>
+#include <array>
+
 
 #include <mujoco/mujoco.h>
 #include "glfw_adapter.h"
 #include "simulate.h"
 #include "array_safety.h"
+#include "rclcpp/rclcpp.hpp"
+#include "pkg1/msg/imu_data.hpp"
+
+
+using namespace std::chrono_literals;
 
 #define MUJOCO_PLUGIN_DIR "mujoco_plugin"
 
@@ -198,6 +205,37 @@ void scanPluginLibraries() {
 }
 
 
+//------------------------------------------- simulation publisher ros node -------------------------------------------
+
+
+
+class SimPublisher : public rclcpp::Node
+{
+  public:
+    SimPublisher()
+    : Node("sim_publisher")
+    {
+      publisher_ = this->create_publisher<pkg1::msg::ImuData>("imu", 1);
+    }
+
+    void publish_message(const double* const accel_data, const double* const gyro_data)
+    {
+      auto message = pkg1::msg::ImuData();
+      for (int i=0; i<3; i++){
+        message.accel_data[i] = accel_data[i];
+        message.gyro_data[i] = gyro_data[i];
+      }
+
+      RCLCPP_INFO(this->get_logger(), "Sending Accel: ('%f','%f','%f')", message.accel_data[0],message.accel_data[1],message.accel_data[2]);
+      RCLCPP_INFO(this->get_logger(), "Sending Gyro: ('%f','%f','%f')", message.gyro_data[0],message.gyro_data[1],message.gyro_data[2]);
+      publisher_->publish(message);
+    }
+    
+  private:
+    rclcpp::Publisher<pkg1::msg::ImuData>::SharedPtr publisher_;
+};
+
+
 //------------------------------------------- simulation -------------------------------------------
 
 
@@ -250,12 +288,13 @@ mjModel* LoadModel(const char* file, mj::Simulate& sim) {
 }
 
 // simulate in background thread (while rendering in main thread)
-void PhysicsLoop(mj::Simulate& sim) {
+void PhysicsLoop(mj::Simulate& sim, std::shared_ptr<SimPublisher> sim_publisher_node) {
   // cpu-sim syncronization point
   std::chrono::time_point<mj::Simulate::Clock> syncCPU;
   mjtNum syncSim = 0;
 
   // run until asked to exit
+  
   while (!sim.exitrequest.load()) {
     if (sim.droploadrequest.load()) {
       sim.LoadMessage(sim.dropfilename);
@@ -395,6 +434,29 @@ void PhysicsLoop(mj::Simulate& sim) {
               mj_step(m, d);
               stepped = true;
 
+              // Get the address of the accelerometer data
+              int accel_sensor_id = mj_name2id(m, mjOBJ_SENSOR, "imu_accel");
+              int accel_sensor_addr = m->sensor_adr[accel_sensor_id];
+
+              // Access the accelerometer data using the address
+              double* accel_data = d->sensordata + accel_sensor_addr;
+              // std::cout << "Accelerometer Data: "
+              //           << " X: " << accel_data[0]
+              //           << " Y: " << accel_data[1]
+              //           << " Z: " << accel_data[2] << std::endl;
+
+              // Get the address of the gyroscope data
+              int gyro_sensor_id = mj_name2id(m, mjOBJ_SENSOR, "imu_gyro");
+              int gyro_sensor_addr = m->sensor_adr[gyro_sensor_id];
+
+              // Access the gyroscope data using the address
+              double* gyro_data = d->sensordata + gyro_sensor_addr;
+              // std::cout << "Gyroscope Data: "
+              //           << " X: " << gyro_data[0]
+              //           << " Y: " << gyro_data[1]
+              //           << " Z: " << gyro_data[2] << std::endl;
+              sim_publisher_node->publish_message(accel_data, gyro_data);
+              rclcpp::spin_some(sim_publisher_node);
               // break if reset
               if (d->time < prevSim) {
                 break;
@@ -438,7 +500,7 @@ void PhysicsThread(mj::Simulate* sim, const char* filename) {
 
       // lock the sim mutex
       const std::unique_lock<std::recursive_mutex> lock(sim->mtx);
-
+      
       mj_forward(m, d);
 
       // allocate ctrlnoise
@@ -449,14 +511,17 @@ void PhysicsThread(mj::Simulate* sim, const char* filename) {
       sim->LoadMessageClear();
     }
   }
-
-  PhysicsLoop(*sim);
+  rclcpp::init(0, nullptr);
+  auto sim_publisher_node = std::make_shared<SimPublisher>();
+  PhysicsLoop(*sim, sim_publisher_node);
 
   // delete everything we allocated
+  rclcpp::shutdown();
   free(ctrlnoise);
   mj_deleteData(d);
   mj_deleteModel(m);
 }
+
 
 //------------------------------------------ main --------------------------------------------------
 

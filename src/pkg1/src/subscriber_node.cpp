@@ -4,11 +4,11 @@
 #include "geometry_msgs/msg/polygon.hpp"
 #include "mujoco/mujoco.h"
 
-#include "../include/simulate/functions.h"
+#include "../include/simulate/physics.h"
 using std::placeholders::_1;
 
 
-const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip_unreduced.xml";
+const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
 // const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
 
 class MinimalSubscriber : public rclcpp::Node
@@ -42,9 +42,7 @@ void RosThread(std::shared_ptr<MinimalSubscriber> node) {
 }
 
 int main(int argc, char* argv[]) {
-  // PREPARE SIMUALTION WITH UI
   mjvCamera cam;
-  // mjv_defaultCamera(&cam); 
 
   // cam.type = mjCAMERA_FREE;
   // cam.lookat[0] = 0;    // x-coordinate of the point to look at
@@ -53,14 +51,6 @@ int main(int argc, char* argv[]) {
   // cam.distance = 200.0;   // distance from the lookat point
   // cam.azimuth = 180;     // rotation around the vertical axis, in degrees
   // cam.elevation = 0; 
-
-  // m.cam_mode[0] = mjCAMERA_TRACKING; // Set the camera mode to tracking
-  // m.cam_bodyid[0] = body_id_to_track; // Set the body ID the camera should track
-
-  // // Optionally, if you want to manually set camera parameters
-  // m.cam_pos[0] = x_position; // Set the X position
-  // m.cam_pos[1] = y_position; // Set the Y position
-  // m.cam_pos[2] = z_position; // Set the Z position
 
   mjvOption opt;
   mjv_defaultOption(&opt);
@@ -80,9 +70,6 @@ int main(int argc, char* argv[]) {
   std::thread rosThreadHandle(&RosThread, node);
   sim->RenderLoop();
 
-  // scan for libraries in the plugin directory to load additional plugins
-  // scanPluginLibraries();
-  //std::cout<< "joining threads" <<std::endl;
   rosThreadHandle.join();
   physicsThreadHandle.join();
   rclcpp::shutdown();

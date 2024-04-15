@@ -19,10 +19,6 @@
         <mesh name="rightshinfixedv2" file="rightshinfixedv2.stl" scale="0.001 0.001 0.001"/>
     </asset>
 
-    <default>
-        <geom contype="0" conaffinity="0"/>
-    </default>
-
     <visual>
         <map force="0.1" zfar="30"/>
         <rgba haze="0.15 0.25 0.35 1"/>

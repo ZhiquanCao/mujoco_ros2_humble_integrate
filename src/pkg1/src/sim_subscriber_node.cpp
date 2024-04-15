@@ -1,15 +1,12 @@
 #include <memory>
+#include <stdexcept>
+#include <string>
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "geometry_msgs/msg/polygon.hpp"
 #include "mujoco/mujoco.h"
-
 #include "../include/simulate/physics.h"
 using std::placeholders::_1;
-
-
-const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
-// const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
 
 class SimSubscriber : public rclcpp::Node
 {
@@ -42,6 +39,14 @@ void RosThread(std::shared_ptr<SimSubscriber> node) {
 }
 
 int main(int argc, char* argv[]) {
+
+  const char* homeDir = getenv("HOME");
+  if (homeDir == nullptr) {
+    throw std::runtime_error("HOME directory environment variable not set");
+  }
+  std::string concate_path = std::string(homeDir) + "/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
+  const char* model_path = concate_path.c_str();
+
   mjvCamera cam;
 
   mjvOption opt;
@@ -58,7 +63,7 @@ int main(int argc, char* argv[]) {
   rclcpp::init(argc, argv);
   auto node = std::make_shared<SimSubscriber>(sim.get());
 
-  std::thread physicsThreadHandle(&PhysicsThread, sim.get(), modelname);
+  std::thread physicsThreadHandle(&PhysicsThread, sim.get(), model_path);
   std::thread rosThreadHandle(&RosThread, node);
   sim->RenderLoop();
 

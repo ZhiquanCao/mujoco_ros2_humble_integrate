@@ -42,15 +42,15 @@ float walk_trajs[4][6] ={
 {  -0.0,   0.0,  0.0,  0.0,  0.0,  0.0}
 };
 //l_thigh, l_knee, r_thigh, r_knee, l_hip, r_hip
-class MinimalPublisher : public rclcpp::Node
+class ControlPublisher : public rclcpp::Node
 {
   public:
-    MinimalPublisher()
-    : Node("publisher")
+    ControlPublisher()
+    : Node("control_publisher")
     {
       publisher_ = this->create_publisher<geometry_msgs::msg::Polygon>("turtle1/cmd_vel", 1);
       i = 0;
-      timer_ = this->create_wall_timer(200ms, std::bind(&MinimalPublisher::publish_message, this));
+      timer_ = this->create_wall_timer(200ms, std::bind(&ControlPublisher::publish_message, this));
     }
 
   private:
@@ -97,7 +97,7 @@ class MinimalPublisher : public rclcpp::Node
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<MinimalPublisher>());
+  rclcpp::spin(std::make_shared<ControlPublisher>());
   rclcpp::shutdown();
   return 0;
 }

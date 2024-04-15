@@ -20,6 +20,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/IK6DOF.msg"
   "msg/ImuData.msg"
 )
+
 set(HOME_DIR $ENV{HOME})
 set(MUJOCO_DIR "${HOME_DIR}/.mujoco/mujoco-3.1.2")
 

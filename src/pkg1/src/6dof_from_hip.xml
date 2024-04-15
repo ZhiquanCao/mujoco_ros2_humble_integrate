@@ -14,7 +14,7 @@
          <mesh name="leftthighfixedv1" file="convex_hull_stl/leftthighfixedv1.stl" scale="0.0001 0.0001 0.0001"/>
         <mesh name="rightshinv3" file="convex_hull_stl/rightshinv3.stl" scale="0.0001 0.0001 0.0001"/>
         <mesh name="footfixedv3" file="convex_hull_stl/footfixedv3.stl" scale="0.0001 0.0001 0.0001"/>
-        <mesh name="chassisv2" file="chassisv2.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="chassisv2" file="original_stl/chassisv2.stl" scale="0.001 0.001 0.001"/>
         <mesh name="rightthighfixedv2" file="convex_hull_stl/rightthighfixedv2.stl" scale="0.0001 0.0001 0.0001"/>
         <mesh name="rightshinfixedv2" file="convex_hull_stl/rightshinfixedv2.stl" scale="0.0001 0.0001 0.0001"/>
     </asset>

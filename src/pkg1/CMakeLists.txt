@@ -46,18 +46,18 @@ endif()
 FILE(GLOB c_includes include/simulate/*.cc)
 
 set(dependencies "geometry_msgs"  "trajectory_msgs" "rclcpp" )
-add_executable(publisher src/publisher_node.cpp)
-add_executable(subscriber src/subscriber_node.cpp ${c_includes})
-ament_target_dependencies(publisher ${dependencies})
-ament_target_dependencies(subscriber ${dependencies})
-rosidl_target_interfaces(subscriber ${PROJECT_NAME} "rosidl_typesupport_cpp") # Where to find the generated struct file for defined msg; used along with #include "pkg1/msg/imu.hpp"
+add_executable(ctrl_pub src/ctrl_publisher_node.cpp)
+add_executable(sim_sub src/sim_subscriber_node.cpp ${c_includes})
+ament_target_dependencies(ctrl_pub ${dependencies})
+ament_target_dependencies(sim_sub ${dependencies})
+rosidl_target_interfaces(sim_sub ${PROJECT_NAME} "rosidl_typesupport_cpp") # Where to find the generated struct file for defined msg; used along with #include "pkg1/msg/imu.hpp"
 
-target_link_libraries(subscriber ${MUJOCO_LIBRARY} glfw)
+target_link_libraries(sim_sub ${MUJOCO_LIBRARY} glfw)
 
 
 install(TARGETS
-  publisher
-  subscriber
+  ctrl_pub
+  sim_sub
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

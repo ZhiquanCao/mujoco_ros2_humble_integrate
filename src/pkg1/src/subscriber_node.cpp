@@ -11,14 +11,14 @@ using std::placeholders::_1;
 const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/6dof_from_hip.xml";
 // const char* modelname = "/home/zhiquan/mujoco_ros2_humble_integrate/src/pkg1/src/MARKIV.xml";
 
-class MinimalSubscriber : public rclcpp::Node
+class SimSubscriber : public rclcpp::Node
 {
 public:
-  MinimalSubscriber(mj::Simulate* sim_ptr)
-  : Node("minimal_subscriber"), sim(sim_ptr)
+  SimSubscriber(mj::Simulate* sim_ptr)
+  : Node("sim_subscriber"), sim(sim_ptr)
   {
     subscription_ = this->create_subscription<geometry_msgs::msg::Polygon>(
-      "turtle1/cmd_vel", 10, [this](const geometry_msgs::msg::Polygon::SharedPtr msg){this->topic_callback(msg);});
+      "mark4/joints_pos", 10, [this](const geometry_msgs::msg::Polygon::SharedPtr msg){this->topic_callback(msg);});
   }
   
 private:
@@ -37,20 +37,12 @@ private:
   rclcpp::Subscription<geometry_msgs::msg::Polygon>::SharedPtr subscription_;
 };
 
-void RosThread(std::shared_ptr<MinimalSubscriber> node) {
+void RosThread(std::shared_ptr<SimSubscriber> node) {
   rclcpp::spin(node);
 }
 
 int main(int argc, char* argv[]) {
   mjvCamera cam;
-
-  // cam.type = mjCAMERA_FREE;
-  // cam.lookat[0] = 0;    // x-coordinate of the point to look at
-  // cam.lookat[1] = 2000;    // y-coordinate of the point to look at
-  // cam.lookat[2] = 0;    // z-coordinate of the point to look at
-  // cam.distance = 200.0;   // distance from the lookat point
-  // cam.azimuth = 180;     // rotation around the vertical axis, in degrees
-  // cam.elevation = 0; 
 
   mjvOption opt;
   mjv_defaultOption(&opt);
@@ -64,7 +56,7 @@ int main(int argc, char* argv[]) {
   );
 
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<MinimalSubscriber>(sim.get());
+  auto node = std::make_shared<SimSubscriber>(sim.get());
 
   std::thread physicsThreadHandle(&PhysicsThread, sim.get(), modelname);
   std::thread rosThreadHandle(&RosThread, node);

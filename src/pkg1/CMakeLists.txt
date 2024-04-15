@@ -20,13 +20,13 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/IK6DOF.msg"
   "msg/ImuData.msg"
 )
-
-set(MUJOCO_DIR "/home/zhiquan/.mujoco/mujoco-3.1.2")
+set(HOME_DIR $ENV{HOME})
+set(MUJOCO_DIR "${HOME_DIR}/.mujoco/mujoco-3.1.2")
 
 include_directories("${MUJOCO_DIR}/include/")
 include_directories("./include/")
 
-find_library(MUJOCO_LIBRARY mujoco PATHS /home/zhiquan/.mujoco/mujoco-3.1.2/lib) 
+find_library(MUJOCO_LIBRARY mujoco PATHS ${HOME_DIR}/.mujoco/mujoco-3.1.2/lib) 
 
 
 if(BUILD_TESTING)

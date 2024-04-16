@@ -111,7 +111,7 @@ module compute(){
 
 
 
-module left_foot() {
+module left_ankle() {
 	translate([-27.5,49.5,-299.5])
 	foot();	
 }
@@ -210,7 +210,7 @@ module left_leg()
 	left_thigh();
 	left_shin_link();
 	left_shin();
-	left_foot();
+	left_ankle();
 }
 module body(){
 	// batt();

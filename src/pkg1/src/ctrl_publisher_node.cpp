@@ -1,96 +1,67 @@
 #include <chrono>
 #include <memory>
 #include "rclcpp/rclcpp.hpp"
-#include "geometry_msgs/msg/twist.hpp"
-#include "geometry_msgs/msg/polygon.hpp"
-// #include "trajectory_msgs/msg/multi_dof_joint_trajectory.hpp"
-// #include "../msg/IK6DOF.msg"
+#include "pkg1/msg/imu_data.hpp"
+#include "pkg1/msg/ik6_dof.hpp"
 using namespace std::chrono_literals;
 
+#define M_PI 3.14159265358979323846
 
-// float walk_trajs[24][6] = {
-// {  0,  0,  0,  0,  0,  0},
-// {  0,  0,  0,  0,  0.0,  0.0},
-// {  0,  0,  0,  0,  0.4,  0.4},
-// {  0,  0,  0,  0,  0.8,  0.8},
-// {  0,  0,  0,  0,  1.2,  1.2},
-// {  0,  0,  0,  0,  1.6,  1.6},
-// {  0,  0,  0,  0,  2.0,  2.0},
-// {  0,  0,  0,  0,  2.4,  2.4},
-// {  0,  0,  0,  0,  2.8,  2.8},
-// {  0,  0,  0,  0,  3.2,  3.2},
-// {  0,  0,  0,  0,  3.6,  3.6},
-// {  5,  0,  -5,   0,  4,  4},
-// {  0,  0,  0,  0,  0,  0},
-// {  0,  0,  0,  0,  0.0,  0.0},
-// {  0,  0,  0,  0,  -0.4,   -0.4},
-// {  0,  0,  0,  0,  -0.8,   -0.8},
-// {  0,  0,  0,  0,  -1.2,   -1.2},
-// {  0,  0,  0,  0,  -1.6,   -1.6},
-// {  0,  0,  0,  0,  -2.0,   -2.0},
-// {  0,  0,  0,  0,  -2.4,   -2.4},
-// {  0,  0,  0,  0,  -2.8,   -2.8},
-// {  0,  0,  0,  0,  -3.2,   -3.2},
-// {  0,  0,  0,  0,  -3.6,   -3.6},
-// {  7,  0,  -7,   0,  -4,   -4}
-// };
 
-float walk_trajs[4][6] ={
-{  -20.0,  20.0,   0.0,  0.0,  0.0,  0.0},
-{  -0.0,   0.0,  0.0,  0.0,  0.0,  0.0},
-{  -0.0,   0.0,  0.0,   -0.0,  0.0,  0.0},
-{  -0.0,   0.0,  0.0,  0.0,  0.0,  0.0}
-};
-//l_thigh, l_knee, r_thigh, r_knee, l_hip, r_hip
+
+double deg_to_rad(double degree) { return degree * M_PI / 180; }
+
 class ControlPublisher : public rclcpp::Node
 {
   public:
     ControlPublisher()
     : Node("control_publisher")
     {
-      publisher_ = this->create_publisher<geometry_msgs::msg::Polygon>("turtle1/cmd_vel", 1);
+      publisher_ = this->create_publisher<pkg1::msg::IK6DOF>("/joint_pos_controller/joint_pos", 1);
       i = 0;
       timer_ = this->create_wall_timer(200ms, std::bind(&ControlPublisher::publish_message, this));
     }
 
   private:
+    
+    double left_thigh_ = 0.2;
+    double left_knee_ = 2* left_thigh_;
+    double left_ankle_ = -0.32;
+    double right_thigh_ = -left_thigh_; 
+    double right_knee_ = 2* left_thigh_; // 0.2
+    double right_ankle_ = -0.32;
+    double left_hip_ = deg_to_rad(2);
+    double right_hip_ = deg_to_rad(2);
+
+    //l_thigh, l_knee, r_thigh, r_knee, l_hip, r_hip
+    double walk_trajs[4][6] ={
+    {  left_thigh_,  left_knee_,   0.0,  0.0,  -left_hip_,  0.0  },
+    {  -0.0,   0.0,  0.0,  0.0,  0.0,  0.0  },
+    {  -0.0,   0.0,  right_thigh_,   right_knee_,  left_hip_,  -right_hip_  },
+    {  -0.0,   0.0,  0.0,  0.0,  0.0,  0.0  }
+    };
+
     void publish_message()
     {
-      // auto p1 = geometry_msgs::msg::Point32();
-      // p1.x = 1;
-      // p1.y = 2;
-      // p1.z = 3;
-      std::vector<geometry_msgs::msg::Point32> q_vals(8);
-      q_vals[0].x = walk_trajs[i][0];
-      q_vals[1].x = -walk_trajs[i][0];
-      q_vals[2].x = -walk_trajs[i][1];
-      q_vals[3].x = walk_trajs[i][4];
+      auto message = pkg1::msg::IK6DOF();
 
-      // q_vals[7].x = -walk_trajs[i][2];
-      q_vals[6].x = walk_trajs[i][2];
-      q_vals[5].x = walk_trajs[i][3];
-      q_vals[4].x = walk_trajs[i][5];
-      // q_vals[1].x = -2*sin(i);
-      // q_vals[2].x = sin(i);
-      // q_vals[3].x = cos(i);
+      message.left_thigh = walk_trajs[i][0];
+      message.left_knee = -walk_trajs[i][1];
+      message.left_ankle = -message.left_knee;
+      message.right_thigh = walk_trajs[i][2];
+      message.right_knee = walk_trajs[i][3];
+      message.right_ankle = -message.right_knee;
+      message.left_hip = walk_trajs[i][4];
+      message.right_hip = walk_trajs[i][5];
 
-
-      auto message = geometry_msgs::msg::Polygon();
-      message.points = q_vals;
-      // message.points[0] = p1;
-      // message.y = sin(i);
-      // message.x = sin(i);
-      // message.x = sin(i);
-      // message.x = sin(i);
-      // message.x = sin(i);
-      RCLCPP_INFO(this->get_logger(), "Sending LΔ : ('%f','%f','%f','%f')", message.points[0].x,message.points[1].x,message.points[2].x,message.points[3].x);
-      RCLCPP_INFO(this->get_logger(), "Sending RΔ : ('%f','%f','%f','%f')", message.points[7].x,message.points[6].x,message.points[5].x,message.points[4].x);
+      RCLCPP_INFO(this->get_logger(), "Sending LΔ : ('%f','%f','%f','%f')", message.left_thigh,message.left_knee,message.left_hip);
+      RCLCPP_INFO(this->get_logger(), "Sending RΔ : ('%f','%f','%f','%f')", message.right_thigh,message.right_knee,message.right_hip);
       publisher_->publish(message);
-      i += 1;
+      i ++;
       i %= 4; 
     }
     rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::Publisher<geometry_msgs::msg::Polygon>::SharedPtr publisher_;
+    rclcpp::Publisher<pkg1::msg::IK6DOF>::SharedPtr publisher_;
     int i;
 };
 

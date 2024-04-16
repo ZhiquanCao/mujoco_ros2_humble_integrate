@@ -16,7 +16,6 @@ find_package(rosidl_default_generators REQUIRED)
 
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/Frame.msg"
   "msg/IK6DOF.msg"
   "msg/ImuData.msg"
 )
@@ -51,6 +50,7 @@ add_executable(ctrl_pub src/ctrl_publisher_node.cpp)
 add_executable(sim_sub src/sim_subscriber_node.cpp ${c_includes})
 ament_target_dependencies(ctrl_pub ${dependencies})
 ament_target_dependencies(sim_sub ${dependencies})
+rosidl_target_interfaces(ctrl_pub ${PROJECT_NAME} "rosidl_typesupport_cpp") # Where to find the generated struct file for defined msg; used along with #include "pkg1/msg/imu.hpp"
 rosidl_target_interfaces(sim_sub ${PROJECT_NAME} "rosidl_typesupport_cpp") # Where to find the generated struct file for defined msg; used along with #include "pkg1/msg/imu.hpp"
 
 target_link_libraries(sim_sub ${MUJOCO_LIBRARY} glfw)

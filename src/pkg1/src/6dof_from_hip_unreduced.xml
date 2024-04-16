@@ -42,18 +42,18 @@
       <site name="imu_site" pos="0 0.05 0.3095" />
       <body name="intermediate_link" pos="0 0.05 0.3095" quat="0.707388 0.706825 0 0">
         <inertial pos="0 0 0" mass="0.1" diaginertia="0.0001 0.0001 0.0001"/>
-        <joint name="right_body_thigh_lateral" pos="0 0 0" axis="0 0 1" range="-0.26 0.26" damping="0.05"/>
+        <joint name="right_hip" pos="0 0 0" axis="0 0 1" range="-0.26 0.26" damping="0.05"/>
         <body name="right_thigh" pos="0.041 0 0">
           <inertial pos="-0.020621 -0.116163 0.000182" quat="0.485395 0.498028 -0.502455 0.513711" mass="0.067538" diaginertia="0.000154883 0.000152057 1.26718e-05"/>
-          <joint name="right_body_thigh" pos="0 0 0" axis="1 0 0" range="-1.57 0.78" damping="0.05"/>
+          <joint name="right_thigh" pos="0 0 0" axis="1 0 0" range="-1.57 0.78" damping="0.05"/>
           <geom type="mesh" rgba="0 1 1 1" mesh="rightthighfixedv2"/>
           <body name="right_shin" pos="0.0025 -0.16 0">
             <inertial pos="-0.02279 -0.05995 -7e-05" quat="0.502033 0.498188 -0.501758 0.498006" mass="0.014172" diaginertia="0.00272029 0.00246096 0.000285114"/>
-            <joint name="right_thigh_shin" pos="0 0 0" axis="1 0 0" range="-1.04 1.04" damping="0.05"/>
+            <joint name="right_knee" pos="0 0 0" axis="1 0 0" range="-1.04 1.04" damping="0.05"/>
             <geom type="mesh" rgba="1 1 0 1" mesh="rightshinfixedv2"/>
-            <body name="right_foot" pos="-0.02 -0.13 0">
+            <body name="right_ankle" pos="-0.02 -0.13 0">
               <inertial pos="-0.003 -0.011919 -9.8e-05" quat="0.70635 0.0327014 -0.0327014 0.70635" mass="0.022566" diaginertia="9.77159e-06 9.65458e-06 1.39971e-06"/>
-              <joint name="right_shin_foot" pos="0 0 0" axis="1 0 0" range="-0.52 0.52" damping="0.05"/>
+              <joint name="right_ankle" pos="0 0 0" axis="1 0 0" range="-0.52 0.52" damping="0.05"/>
               <geom type="mesh" rgba="0 1 0 1" mesh="footfixedv3"/>
             </body>
           </body>
@@ -62,18 +62,18 @@
       
       <body name="intermediate_link_2" pos="0.1 0.05 0.3095" quat="0.000563312 0.000562864 0.707388 0.706825">
         <inertial pos="0 0 0" mass="0.1" diaginertia="0.0001 0.0001 0.0001"/>
-        <joint name="body_left_thigh_lateral" pos="0 0 0" axis="0 0 1" range="-0.26 0.26" damping="0.05"/>
+        <joint name="left_hip" pos="0 0 0" axis="0 0 1" range="-0.26 0.26" damping="0.05"/>
         <body name="left_thigh">
           <inertial pos="-0.020539 -0.11748 -0.000178" quat="0.500887 0.512722 -0.486405 0.499639" mass="0.067626" diaginertia="0.000159543 0.000156167 1.33237e-05"/>
-          <joint name="body_left_thigh" pos="0 0 0" axis="1 0 0" range="-0.78 1.57" damping="0.05"/>
+          <joint name="left_thigh" pos="0 0 0" axis="1 0 0" range="-0.78 1.57" damping="0.05"/>
           <geom type="mesh" rgba="0 1 1 1" mesh="leftthighfixedv1"/>
           <body name="left_shin" pos="-0.0425 -0.16 0" quat="0.000796327 0 1 0">
             <inertial pos="-0.02279 -0.05995 -7e-05" quat="0.502033 0.498188 -0.501758 0.498006" mass="0.014172" diaginertia="0.00272029 0.00246096 0.000285114"/>
-            <joint name="left_thigh_shin" pos="0 0 0" axis="1 0 0" range="-1.04 1.04" damping="0.05"/>
+            <joint name="left_knee" pos="0 0 0" axis="1 0 0" range="-1.04 1.04" damping="0.05"/>
             <geom type="mesh" rgba="1 1 0 1" mesh="rightshinv3"/>
-            <body name="left_foot" pos="-0.02 -0.13 0">
+            <body name="left_ankle" pos="-0.02 -0.13 0">
               <inertial pos="-0.003 -0.011919 -9.8e-05" quat="0.70635 0.0327014 -0.0327014 0.70635" mass="0.022566" diaginertia="9.77159e-06 9.65458e-06 1.39971e-06"/>
-              <joint name="left_shin_foot" pos="0 0 0" axis="1 0 0" range="-0.52 0.52" damping="0.05"/>
+              <joint name="left_ankle" pos="0 0 0" axis="1 0 0" range="-0.52 0.52" damping="0.05"/>
               <geom type="mesh" rgba="0 1 0 1" mesh="footfixedv3"/>
             </body>
           </body>
@@ -91,30 +91,32 @@
       
   </worldbody>
 
+  
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_body_thigh_lateral"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_hip"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_body_thigh"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_thigh"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_thigh_shin"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_knee"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_shin_foot"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_hip"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="body_left_thigh_lateral"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_thigh"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="body_left_thigh"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_knee"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_thigh_shin"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_ankle"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_shin_foot"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_ankle"/>
   </actuator>
+
 
   <sensor>
     <accelerometer name="imu_accel" site="imu_site"/>

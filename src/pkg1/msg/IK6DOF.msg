@@ -1,8 +1,8 @@
-float32 q_foot_l
-float32 q_knee_l
-float32 q_thigh_l
-float32 q_hip_l
-float32 q_foot_r
-float32 q_knee_r
-float32 q_thigh_r
-float32 q_hip_r
+float64 left_thigh
+float64 left_knee
+float64 left_ankle
+float64 right_thigh
+float64 right_knee
+float64 right_ankle
+float64 left_hip
+float64 right_hip

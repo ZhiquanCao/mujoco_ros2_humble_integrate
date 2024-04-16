@@ -19,7 +19,7 @@ class ControlPublisher : public rclcpp::Node
     {
       publisher_ = this->create_publisher<pkg1::msg::IK6DOF>("/joint_pos_controller/joint_pos", 1);
       i = 0;
-      timer_ = this->create_wall_timer(200ms, std::bind(&ControlPublisher::publish_message, this));
+      timer_ = this->create_wall_timer(200ms, std::bind(&ControlPublisher::publish_msg, this));
     }
 
   private:
@@ -41,22 +41,22 @@ class ControlPublisher : public rclcpp::Node
     {  -0.0,   0.0,  0.0,  0.0,  0.0,  0.0  }
     };
 
-    void publish_message()
+    void publish_msg()
     {
-      auto message = pkg1::msg::IK6DOF();
+      auto msg = pkg1::msg::IK6DOF();
 
-      message.left_thigh = walk_trajs[i][0];
-      message.left_knee = -walk_trajs[i][1];
-      message.left_ankle = -message.left_knee;
-      message.right_thigh = walk_trajs[i][2];
-      message.right_knee = walk_trajs[i][3];
-      message.right_ankle = -message.right_knee;
-      message.left_hip = walk_trajs[i][4];
-      message.right_hip = walk_trajs[i][5];
+      msg.left_thigh = walk_trajs[i][0];
+      msg.left_knee = walk_trajs[i][1];
+      msg.left_ankle = -msg.left_knee;
+      msg.right_thigh = walk_trajs[i][2];
+      msg.right_knee = walk_trajs[i][3];
+      msg.right_ankle = -msg.right_knee;
+      msg.left_hip = walk_trajs[i][4];
+      msg.right_hip = walk_trajs[i][5];
 
-      RCLCPP_INFO(this->get_logger(), "Sending LΔ : ('%f','%f','%f','%f')", message.left_thigh,message.left_knee,message.left_hip);
-      RCLCPP_INFO(this->get_logger(), "Sending RΔ : ('%f','%f','%f','%f')", message.right_thigh,message.right_knee,message.right_hip);
-      publisher_->publish(message);
+      RCLCPP_INFO(this->get_logger(), "Sending LΔ : (Thigh '%f', Knee'%f', Ankle'%f', Hip'%f')", msg.left_thigh, msg.left_knee, msg.left_ankle, msg.left_hip);
+      RCLCPP_INFO(this->get_logger(), "Sending RΔ : (Thigh '%f', Knee'%f', Ankle'%f', Hip'%f')", msg.right_thigh, msg.right_knee, msg.right_ankle, msg.right_hip);
+      publisher_->publish(msg);
       i ++;
       i %= 4; 
     }

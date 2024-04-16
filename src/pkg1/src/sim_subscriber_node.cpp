@@ -28,8 +28,9 @@ public:
   
 private:
   void topic_callback(pkg1::msg::IK6DOF::SharedPtr msg){
+        // RCLCPP_INFO(this->get_logger(), "Sending LΔ : (Thigh '%f', Knee'%f', Ankle'%f', Hip'%f')", msg.left_thigh, msg.left_knee, msg.left_ankle, msg.left_hip);
         const std::unique_lock<std::recursive_mutex> lock(sim->mtx);
-        
+
         if (m != nullptr) {
           d->ctrl[LEFT_THIGH] = msg->left_thigh;
           d->ctrl[LEFT_KNEE] = msg->left_knee;

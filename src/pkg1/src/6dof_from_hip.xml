@@ -92,16 +92,13 @@
   </worldbody>
 
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_hip"/>
-  </actuator>
-  <actuator>
     <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_thigh"/>
   </actuator>
   <actuator>
     <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_knee"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_hip"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_ankle"/>
   </actuator>
   <actuator>
     <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_thigh"/>
@@ -110,10 +107,13 @@
     <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_knee"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_ankle"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_ankle"/>
   </actuator>
   <actuator>
-    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_ankle"/>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="left_hip"/>
+  </actuator>
+  <actuator>
+    <position ctrllimited="true" ctrlrange="-10 10" gear="1" joint="right_hip"/>
   </actuator>
 
   <sensor>

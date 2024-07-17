@@ -1,0 +1,8 @@
+float64 left_thigh
+float64 left_knee
+float64 left_ankle
+float64 right_thigh
+float64 right_knee
+float64 right_ankle
+float64 left_hip
+float64 right_hip

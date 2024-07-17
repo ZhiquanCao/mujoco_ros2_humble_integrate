@@ -1,0 +1,110 @@
+<mujoco model="8dof">
+    <compiler angle="radian"/>
+    <option gravity="0 0 -9.8"/>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0 0 0" rgb2="0 0 0" width="512" height="512"/>
+        <texture name="body" type="cube" builtin="flat" mark="cross" width="127" height="1278" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+        <material name="body" texture="body" texuniform="true" rgba="0.8 0.6 0.4 1"/>
+        <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+        <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2" shininess="1.0"/>
+
+        <!-- Define materials for different body parts -->
+        <material name="chassis_material" rgba="1 0 0 1"/>
+        <!-- Red -->
+        <material name="thigh_material" rgba="0 1 0 1"/>
+        <!-- Green -->
+        <material name="shin_material" rgba="0 0 1 1"/>
+        <!-- Blue -->
+        <material name="foot_material" rgba="1 1 0 1"/>
+        <!-- Yellow -->
+
+        <mesh name="chassis_mesh" file="../meshes/chassisv6.stl" scale="0.0001 0.0001 0.0001"/>
+        <mesh name="thigh_mesh" file="../meshes/thighv3.stl" scale="0.000001 0.000001 0.000001"/>
+        <mesh name="shin_mesh" file="../meshes/shinv4.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="foot_mesh" file="../meshes/footv6.stl" scale="0.001 0.001 0.001"/>
+    </asset>
+
+    <worldbody>
+        <body name="ground" pos="0 0 0">
+            <geom type="plane" size="10 10 0.1" material="grid"/>
+        </body>
+
+        <body name="chassis" quat="0.7068252 0 0 0.7073883">
+            <joint name="free_joint" pos="0 0 0.8" type="free"/>
+            <geom type="mesh" mesh="chassis_mesh" material="chassis_material"/>
+            <inertial pos="0.000188 0.014911 0.024611" mass="1.9" fullinertia="0.01012 0.000038096 -0.000079858 0.0185 -0.001408 0.01433"/>
+
+            <body name="left_intermediate_link" pos="0.0897 0 0" quat="0 0 0 1">
+                <inertial pos="0 0 0" mass="1e-14" diaginertia="1e-14 1e-14 1e-14"/>
+                <joint name="hip_left_lateral" type="hinge" pos="0 0 0" axis="0 0 1" damping="0.7" frictionloss="0.9"/>
+
+                <body name="left_thigh" pos="0.01 0 0.044">
+                    <geom type="mesh" mesh="thigh_mesh" material="thigh_material"/>
+                    <inertial pos="0.043859 -0.040381 -0.000925" mass="0.65958" fullinertia="0.004912 -0.0004527 0.00004645 0.000444 0.00024837 0.004897"/>
+                    <joint name="hip_left" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.7" frictionloss="0.9"/>
+
+                    <body name="left_shin" pos="0.02 -0.262 0" quat="0 0 0 1">
+                        <geom type="mesh" mesh="shin_mesh" material="shin_material"/>
+                        <inertial pos="0.019938 -0.107187 0.000988" mass="1.488501" fullinertia="0.01795 0.000 0.000 0.0009275 0.000 0.0181"/>
+                        <joint name="left_knee" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.7" frictionloss="0.9"/>
+
+                        <body name="left_foot" pos="0.02 -0.317 0" quat="0 0 0 1">
+                            <geom type="mesh" mesh="foot_mesh" material="foot_material"/>
+                            <inertial pos="-0.000813 -0.004976 -0.000007" mass="0.170956" fullinertia="0.0002477 0.000 0.000 0.0002817 0.000 0.000036794431"/>
+                            <joint name="left_ankle" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.9" frictionloss="1.14"/>
+                        </body>
+                    </body>
+                </body>
+            </body>
+
+            <body name="right_intermediate_link" pos="-0.0897 0 0">
+                <inertial pos="0 0 0" mass="1e-14" diaginertia="1e-14 1e-14 1e-14"/>
+                <joint name="hip_right_lateral" type="hinge" pos="0 0 0" axis="0 0 1" damping="0.7" frictionloss="0.9"/>
+
+                <body name="right_thigh" pos="-0.01 0 0.044" quat="0 0 0 1">
+                    <geom type="mesh" mesh="thigh_mesh" material="thigh_material"/>
+                    <inertial pos="0.043859 -0.040381 -0.000925" mass="0.65958" fullinertia="0.004912 -0.0004527 0.00004645 0.000444 0.00024837 0.004897"/>
+                    <joint name="hip_right" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.7" frictionloss="0.9"/>
+
+                    <body name="right_shin" pos="0.02 -0.262 0" quat="0 0 0 1">
+                        <geom type="mesh" mesh="shin_mesh" material="shin_material"/>
+                         <inertial pos="0.019938 -0.107187 0.000988" mass="1.488501" fullinertia="0.01795 0.000 0.000 0.0009275 0.000 0.0181"/>
+                        <joint name="right_knee" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.7" frictionloss="0.9"/>
+
+                        <body name="right_foot" pos="0.02 -0.317 0" quat="0 0 0 1">
+                            <geom type="mesh" mesh="foot_mesh" material="foot_material"/>
+                           <inertial pos="-0.000813 -0.004976 -0.000007" mass="0.170956" fullinertia="0.0002477 0.000 0.000 0.0002817 0.000 0.000036794431"/>
+                            <joint name="right_ankle" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.9" frictionloss="1.14"/>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <!-- Position Actuators -->
+        <position ctrllimited="true" ctrlrange="-1 1" gear="1" joint="hip_left_lateral"/>
+        <position ctrllimited="true" ctrlrange="-1 1" gear="1" joint="left_knee"/>
+        <position ctrllimited="true" ctrlrange="-1 1" gear="1" joint="left_ankle"/>
+        <position ctrllimited="true" ctrlrange="-1 1" gear="1" joint="hip_right_lateral"/>
+        <position ctrllimited="true" ctrlrange="-1 1" gear="1" joint="right_knee"/>
+        <position ctrllimited="true" ctrlrange="-1 1" gear="1" joint="right_ankle"/>
+        <position ctrllimited="true" ctrlrange="-1 1" gear="1" joint="hip_left"/>
+        <position ctrllimited="true" ctrlrange="-1 1" gear="1" joint="hip_right"/>
+
+        <!-- Velocity Actuators -->
+        <velocity ctrllimited="true" ctrlrange="-1 1" gear="1" joint="hip_left_lateral"/>
+        <velocity ctrllimited="true" ctrlrange="-1 1" gear="1" joint="left_knee"/>
+        <velocity ctrllimited="true" ctrlrange="-1 1" gear="1" joint="left_ankle"/>
+        <velocity ctrllimited="true" ctrlrange="-1 1" gear="1" joint="hip_right_lateral"/>
+        <velocity ctrllimited="true" ctrlrange="-1 1" gear="1" joint="right_knee"/>
+        <velocity ctrllimited="true" ctrlrange="-1 1" gear="1" joint="right_ankle"/>
+        <velocity ctrllimited="true" ctrlrange="-1 1" gear="1" joint="hip_left"/>
+        <velocity ctrllimited="true" ctrlrange="-1 1" gear="1" joint="hip_right"/>
+    </actuator>
+
+
+
+</mujoco>
